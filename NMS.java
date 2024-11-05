@@ -20,8 +20,7 @@ import java.util.Map;
 public class NMS{
     static int deviceCount;
         
-    public static List<Map<String, String>> readDevices() {
-        String filePath = "devices.txt"; // Specify the path to your file here
+    public static List<Map<String, String>> readDevices(String filePath) {
         int lineCount = 0;
         List<Map<String, String>> listOfValues = new ArrayList<>();
 
@@ -70,11 +69,37 @@ public class NMS{
         deviceCount = lineCount;
         return listOfValues;
     }
+
+    public static List<List<String>> readConnections(String filePath) {
+        List<List<String>> listOfLists = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Split the line by comma and trim whitespace
+                String[] parts = line.split(",");
+                if (parts.length == 2) { // Ensure there are two parts
+                    List<String> innerList = new ArrayList<>();
+                    innerList.add(parts[0].trim()); // First value
+                    innerList.add(parts[1].trim()); // Second value
+                    listOfLists.add(innerList); // Add the inner list to the outer list
+                } else {
+                    System.out.println("Error: Line format is incorrect - " + line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while reading the file.");
+            e.printStackTrace();
+        }
+
+        return listOfLists; // Return the list of lists
+    }
     
     public static void main(String[] args){
-        List<Map<String, String>> listOfValues = readFiles();
+        List<Map<String, String>> listOfValues = readDevices("devices.txt");
+        List<List<String>> listOfConnections = readConnections("connections.txt");
 
-        // System.out.println("\n" + listOfValues.toString());
+        System.out.println("\n" + listOfConnections.toString());
         
         NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount);
 
