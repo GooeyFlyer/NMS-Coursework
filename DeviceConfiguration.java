@@ -4,7 +4,7 @@ public class DeviceConfiguration {
     String IPV4;
     String subnet;
     
-    public void addConfig(String connectionInterface, String mAC, String iPV4, String subnet) {
+    public DeviceConfiguration(String connectionInterface, String mAC, String iPV4, String subnet) {
         this.connectionInterface = connectionInterface;
         this.MAC = mAC;
         this.IPV4 = iPV4;
