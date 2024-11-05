@@ -93,4 +93,8 @@ public class NetworkDeviceManager {
         int deviceIndex = deviceIndexMap.get(deviceId);
         return devices.get(deviceIndex);
     }
+
+    public int getDeviceIndexById(String deviceId){
+        return deviceIndexMap.get(deviceId);
+    }
 }
