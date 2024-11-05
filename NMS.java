@@ -18,10 +18,9 @@ import java.util.Map;
  */
 
 public class NMS{
-    static NetworkDeviceManager deviceManager;
     static int deviceCount;
         
-    public static List<Map<String, String>> readFiles() {
+    public static List<Map<String, String>> readDevices() {
         String filePath = "devices.txt"; // Specify the path to your file here
         int lineCount = 0;
         List<Map<String, String>> listOfValues = new ArrayList<>();
@@ -39,8 +38,8 @@ public class NMS{
                 String name = parts[1].trim();
                 
                 // Print or process the values
-                System.out.println("\ndeviceId=" + deviceId);
-                System.out.println("name=" + name);
+                // System.out.println("\ndeviceId=" + deviceId);
+                // System.out.println("name=" + name);
                 values.put("deviceId", deviceId);
                 values.put("name", name);
 
@@ -53,7 +52,7 @@ public class NMS{
 
                     // Extract just the values
                     for (String pair : pairs) {
-                        System.out.println(pair);
+                        // System.out.println(pair);
                         String[] keyValue = pair.split("=");
                         if (keyValue.length == 2) {
                             values.put(keyValue[0].trim(), keyValue[1].trim()); // Get the value part and trim whitespace
@@ -74,7 +73,15 @@ public class NMS{
     
     public static void main(String[] args){
         List<Map<String, String>> listOfValues = readFiles();
-        System.out.println("\n" + listOfValues.toString());
+
+        // System.out.println("\n" + listOfValues.toString());
+        
+        NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount);
+
+        for (Map<String,String> values : listOfValues) {
+            NetworkDevice device = new NetworkDevice(values.get("deviceId"), values.get("name"));
+            deviceManager.addDevice(device);
+        }
     }
 
 }
