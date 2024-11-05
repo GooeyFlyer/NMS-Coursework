@@ -31,7 +31,50 @@ public class NetworkDeviceManager {
         deviceIndexMap.put(device.getDeviceId(), devices.size() -1);
     }
 
+    public void addEdge(int source, int destination) {
+        if (source >= devices.size() || destination >= devices.size()) {
+            System.out.println("Error: Vertex index out of bounds.");
+            return;
+        }
+        adjMatrix[source][destination] = 1;
+        adjMatrix[destination][source] = 1; // For undirected graph
+    }
+
     public void removeDevice(String deviceId) {
+        Integer index = deviceIndexMap.get(deviceId);
+        if (index == null) {
+            System.out.println("Error: Vertex not found.");
+            return;
+        }
+
+        // Remove the vertex from the list and map
+        devices.remove((int) index);
+        deviceIndexMap.remove(deviceId);
+
+        // Shift rows and columns in adjacency matrix
+        for (int i = index; i < devices.size(); i++) {
+            for (int j = 0; j < devices.size() + 1; j++) {
+                adjMatrix[i][j] = adjMatrix[i + 1][j]; // Shift rows up
+            }
+        }
+        for (int i = 0; i < devices.size(); i++) {
+            for (int j = index; j < devices.size(); j++) {
+                adjMatrix[i][j] = adjMatrix[i][j + 1]; // Shift columns left
+            }
+        }
+
+        // Adjust the size of the adjacency matrix
+        boolean[][] newMatrix = new boolean[devices.size()][devices.size()];
+        for (int i = 0; i < devices.size(); i++) {
+            System.arraycopy(adjMatrix[i], 0, newMatrix[i], 0, devices.size());
+        }
+        adjMatrix = newMatrix;
+
+        // Update vertexIndexMap to reflect new indices
+        deviceIndexMap.clear();
+        for (int i = 0; i < devices.size(); i++) {
+            deviceIndexMap.put(devices.get(i).getDeviceId(), i);
+        }
     }
 
     public void configureDevice(String deviceId, DeviceConfiguration config) {
