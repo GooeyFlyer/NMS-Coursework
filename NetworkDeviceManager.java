@@ -36,8 +36,8 @@ public class NetworkDeviceManager {
             System.out.println("Error: Vertex index out of bounds.");
             return;
         }
-        adjMatrix[source][destination] = 1;
-        adjMatrix[destination][source] = 1; // For undirected graph
+        adjMatrix[source][destination] = true;
+        adjMatrix[destination][source] = true; // For undirected graph
     }
 
     public void removeDevice(String deviceId) {
