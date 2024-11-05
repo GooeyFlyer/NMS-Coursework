@@ -11,9 +11,11 @@ import java.util.List;
  */
 public class RouteManager {
     NetworkDeviceManager deviceManager;
+    private boolean[][] adjMatrix;
 
-    public RouteManager(NetworkDeviceManager deviceManager) {
+    public RouteManager(NetworkDeviceManager deviceManager, int vertexCount) {
         this.deviceManager = deviceManager;
+        adjMatrix = new boolean[vertexCount][vertexCount];
     }
 
     public void addDevice(NetworkDevice device) {
@@ -29,10 +31,37 @@ public class RouteManager {
             System.out.println("Error: Vertex index out of bounds.");
             return;
         }
-        deviceManager.addEdge(sourceIndex, destinationIndex);
+        adjMatrix[sourceIndex][destinationIndex] = true;
+        adjMatrix[destinationIndex][sourceIndex] = true;
     }
 
     public List<NetworkDevice> getOptimalRoute(NetworkDevice source, NetworkDevice destination) {
+        List<NetworkDevice> devices = deviceManager.getDevices();
+
+        int sourceIndex = devices.indexOf(source);
+        int destinationIndex = devices.indexOf(destination);
+
         
+
+    }
+
+
+    // for testing
+
+    public void printGraph() {
+        List<NetworkDevice> devices = deviceManager.getDevices();
+        System.out.print("   ");
+        for (NetworkDevice device : devices) {
+            System.out.print(device.getDeviceId() + "   ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < devices.size(); i++) {
+            System.out.print(devices.get(i).getDeviceId() + " ");
+            for (int j = 0; j < devices.size(); j++) {
+                System.out.print(adjMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }

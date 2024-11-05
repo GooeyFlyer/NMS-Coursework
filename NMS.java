@@ -106,7 +106,7 @@ public class NMS{
             // System.out.println("\n" + listOfConnections.toString());
             
             NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount);
-            RouteManager routeManager = new RouteManager(deviceManager);
+            RouteManager routeManager = new RouteManager(deviceManager, deviceCount);
     
             for (Map<String,String> values : listOfValues) {
                 NetworkDevice device = new NetworkDevice(values.get("deviceId"), values.get("name"));
@@ -120,7 +120,7 @@ public class NMS{
                 routeManager.addRoute(device1, device2, weight);
         }
 
-        deviceManager.printGraph();
+        routeManager.printGraph();
     }
 
 }

@@ -15,13 +15,11 @@ import java.util.Map;
  * other class.
  */
 public class NetworkDeviceManager {
-
-    private boolean[][] adjMatrix;
+    
     private List<NetworkDevice> devices;
     private Map<String, Integer> deviceIndexMap;
 
     public NetworkDeviceManager(int vertexCount) {
-        adjMatrix = new boolean[vertexCount][vertexCount];
         devices = new ArrayList<>(vertexCount);
         deviceIndexMap = new HashMap<>(vertexCount);
     }
@@ -29,11 +27,6 @@ public class NetworkDeviceManager {
     public void addDevice(NetworkDevice device) {
         devices.add(device);
         deviceIndexMap.put(device.getDeviceId(), devices.size() -1);
-    }
-
-    public void addEdge(int source, int destination) {
-        adjMatrix[source][destination] = true;
-        adjMatrix[destination][source] = true;
     }
 
     public void removeDevice(String deviceId) {
@@ -46,25 +39,6 @@ public class NetworkDeviceManager {
         // Remove the device from the list and map
         devices.remove((int) index);
         deviceIndexMap.remove(deviceId);
-
-        // Shift rows and columns in adjacency matrix
-        for (int i = index; i < devices.size(); i++) {
-            for (int j = 0; j < devices.size() + 1; j++) {
-                adjMatrix[i][j] = adjMatrix[i + 1][j]; // Shift rows up
-            }
-        }
-        for (int i = 0; i < devices.size(); i++) {
-            for (int j = index; j < devices.size(); j++) {
-                adjMatrix[i][j] = adjMatrix[i][j + 1]; // Shift columns left
-            }
-        }
-
-        // Adjust the size of the adjacency matrix
-        boolean[][] newMatrix = new boolean[devices.size()][devices.size()];
-        for (int i = 0; i < devices.size(); i++) {
-            System.arraycopy(adjMatrix[i], 0, newMatrix[i], 0, devices.size());
-        }
-        adjMatrix = newMatrix;
 
         // change map
         deviceIndexMap.clear();
@@ -92,23 +66,5 @@ public class NetworkDeviceManager {
 
     public int getDeviceIndexById(String deviceId){
         return deviceIndexMap.get(deviceId);
-    }
-
-    // for testing
-
-    public void printGraph() {
-        System.out.print("   ");
-        for (NetworkDevice device : devices) {
-            System.out.print(device.getDeviceId() + "   ");
-        }
-        System.out.println();
-
-        for (int i = 0; i < devices.size(); i++) {
-            System.out.print(devices.get(i).getDeviceId() + " ");
-            for (int j = 0; j < devices.size(); j++) {
-                System.out.print(adjMatrix[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 }
