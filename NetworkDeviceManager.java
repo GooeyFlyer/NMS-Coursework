@@ -97,4 +97,22 @@ public class NetworkDeviceManager {
     public int getDeviceIndexById(String deviceId){
         return deviceIndexMap.get(deviceId);
     }
+
+    // for testing
+
+    public void printGraph() {
+        System.out.print("   ");
+        for (NetworkDevice device : devices) {
+            System.out.print(device.getDeviceId() + "   ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < devices.size(); i++) {
+            System.out.print(devices.get(i).getDeviceId() + " ");
+            for (int j = 0; j < devices.size(); j++) {
+                System.out.print(adjMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 }
