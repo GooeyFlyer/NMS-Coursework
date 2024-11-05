@@ -99,7 +99,7 @@ public class NMS{
         List<Map<String, String>> listOfValues = readDevices("devices.txt");
         List<List<String>> listOfConnections = readConnections("connections.txt");
 
-        System.out.println("\n" + listOfConnections.toString());
+        // System.out.println("\n" + listOfConnections.toString());
         
         NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount);
 
@@ -107,6 +107,15 @@ public class NMS{
             NetworkDevice device = new NetworkDevice(values.get("deviceId"), values.get("name"));
             deviceManager.addDevice(device);
         }
+
+        for (List<String> connection : listOfConnections) {
+            int device1Index = deviceManager.getDeviceIndexById(connection.get(0));
+            int device2Index = deviceManager.getDeviceIndexById(connection.get(1));
+
+            deviceManager.addEdge(device1Index, device2Index);
+        }
+
+        deviceManager.printGraph();
     }
 
 }
