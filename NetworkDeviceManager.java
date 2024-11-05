@@ -32,10 +32,6 @@ public class NetworkDeviceManager {
     }
 
     public void addEdge(int source, int destination) {
-        if (source >= devices.size() || destination >= devices.size()) {
-            System.out.println("Error: Vertex index out of bounds.");
-            return;
-        }
         adjMatrix[source][destination] = true;
         adjMatrix[destination][source] = true;
     }
