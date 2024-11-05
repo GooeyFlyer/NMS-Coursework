@@ -37,7 +37,7 @@ public class NetworkDeviceManager {
             return;
         }
         adjMatrix[source][destination] = true;
-        adjMatrix[destination][source] = true; // For undirected graph
+        adjMatrix[destination][source] = true;
     }
 
     public void removeDevice(String deviceId) {
@@ -47,7 +47,7 @@ public class NetworkDeviceManager {
             return;
         }
 
-        // Remove the vertex from the list and map
+        // Remove the device from the list and map
         devices.remove((int) index);
         deviceIndexMap.remove(deviceId);
 
@@ -70,7 +70,7 @@ public class NetworkDeviceManager {
         }
         adjMatrix = newMatrix;
 
-        // Update vertexIndexMap to reflect new indices
+        // change map
         deviceIndexMap.clear();
         for (int i = 0; i < devices.size(); i++) {
             deviceIndexMap.put(devices.get(i).getDeviceId(), i);
