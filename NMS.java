@@ -95,13 +95,25 @@ public class NMS{
     
             return listOfLists; // Return the list of lists
         }
+
+        public static void printRoute(List<NetworkDevice> route) {
+            for (NetworkDevice device : route) {
+                System.out.print(device.getDeviceId() + " ");
+            }
+        }
         
         public static void main(String[] args){
     
             //make sure you use args instead of inputs
+
+            String devicesFilePath = "devices.txt";
+            String connectionsFilePath = "connections.txt";
+
+            String sourceId = "PC1";
+            String destinationId = "F1";
     
-            List<Map<String, String>> listOfValues = readDevices("devices.txt");
-            List<List<String>> listOfConnections = readConnections("connections.txt");
+            List<Map<String, String>> listOfValues = readDevices(devicesFilePath);
+            List<List<String>> listOfConnections = readConnections(connectionsFilePath);
     
             // System.out.println("\n" + listOfConnections.toString());
             
@@ -121,6 +133,7 @@ public class NMS{
         }
 
         routeManager.printGraph();
+        printRoute(routeManager.getOptimalRoute(deviceManager.getDeviceById(sourceId), deviceManager.getDeviceById(destinationId)));
     }
 
 }
