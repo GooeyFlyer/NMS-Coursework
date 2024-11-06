@@ -60,11 +60,15 @@ public class NetworkDeviceManager {
     }
 
     public NetworkDevice getDeviceById(String deviceId) {
-        int deviceIndex = deviceIndexMap.get(deviceId);
-        return devices.get(deviceIndex);
+        return devices.get(getDeviceIndexById(deviceId));
     }
 
-    public int getDeviceIndexById(String deviceId){
-        return deviceIndexMap.get(deviceId);
+    public int getDeviceIndexById(String deviceId) {
+        Integer index = deviceIndexMap.get(deviceId);
+        if (index != null) {
+            return index;
+        } else {
+            throw new IllegalArgumentException("Device ID '" + deviceId + "' not found in deviceIndexMap.");
+        }
     }
 }
