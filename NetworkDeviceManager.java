@@ -64,6 +64,9 @@ public class NetworkDeviceManager {
     }
 
     public int getDeviceIndexById(String deviceId) {
+
+        // TODO make error handling better
+
         Integer index = deviceIndexMap.get(deviceId);
         if (index != null) {
             return index;
