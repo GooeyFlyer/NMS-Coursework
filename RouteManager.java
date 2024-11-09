@@ -15,9 +15,11 @@ import java.util.Queue;
 public class RouteManager {
     NetworkDeviceManager deviceManager;
     private int[][] adjMatrix;
+    private boolean[] visited;
 
     public RouteManager(NetworkDeviceManager deviceManager, int vertexCount) {
         this.deviceManager = deviceManager;
+        this.visited = new boolean[vertexCount];
         adjMatrix = new int[vertexCount][vertexCount];
     }
 
@@ -44,35 +46,50 @@ public class RouteManager {
         int sourceIndex = devices.indexOf(source);
         int destinationIndex = devices.indexOf(destination);
 
-        int n = adjMatrix.length;  // Number of nodes in the graph
-        List<NetworkDevice> visitedNodes = new ArrayList<>();
-        boolean[] visited = new boolean[n];
-        Queue<Integer> queue = new LinkedList<>();
+        List<NetworkDevice> path = new ArrayList<>();
 
-        // Start with the starting node
+        List<Integer> indexPath = bfs(sourceIndex, destinationIndex);
+
+        for (Integer index : indexPath) {
+            path.add(devices.get(index));
+        }
+        
+        return path;
+
+    }
+
+    private List<Integer> bfs(int sourceIndex, int destinationIndex) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(sourceIndex);
         visited[sourceIndex] = true;
-        queue.offer(sourceIndex);
+        List<Integer> stack = new ArrayList<>();
 
         while (!queue.isEmpty()) {
-            int currentNode = queue.poll();
-            visitedNodes.add(devices.get(currentNode));
+            int current = queue.poll();
+            //System.out.println(deviceManager.getDevices().get(current).getDeviceId());
+            stack.add(current);
 
-            // Stop search when the target node is found
-            if (currentNode == destinationIndex) {
-                break;
+            if (current == destinationIndex) {
+                return stack; // found path to target
             }
 
-            // Traverse all adjacent nodes
-            for (int neighbor = 0; neighbor < n; neighbor++) {
-                // Check if there's an edge and if the node has not been visited
-                if (adjMatrix[currentNode][neighbor] == 1 && !visited[neighbor]) {
-                    visited[neighbor] = true;
-                    queue.offer(neighbor);
+            // Explore all adjacent nodes
+            boolean children = false;
+            for (int i = 0; i < adjMatrix.length; i++) {
+                if (adjMatrix[current][i] == 1 && !visited[i]) { // check for an edge and if the node is unvisited
+                    queue.add(i);
+                    visited[i] = true;
+                    children = true;
                 }
             }
-        }
-        return visitedNodes;
+            // if the current node has no valid children, remove it from the stack, as it wont be in the path
+            if (!children) {
+                stack.removeLast();
+            }
 
+        }
+
+        return new ArrayList<>(); // no path found
     }
 
 
