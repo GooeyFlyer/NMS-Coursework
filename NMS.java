@@ -98,7 +98,10 @@ public class NMS{
 
     public static void printRoute(List<NetworkDevice> route) {
         for (NetworkDevice device : route) {
-            System.out.print(device.getDeviceId() + " ");
+            System.out.print(device.getDeviceId());
+            if (!(device == route.getLast())){
+                System.out.print(" to ");
+            }
         }
     }
     
@@ -106,11 +109,11 @@ public class NMS{
 
         //make sure you use args instead of inputs
 
-        String devicesFilePath = "devices.txt";
-        String connectionsFilePath = "connections.txt";
+        String devicesFilePath = args[0];
+        String connectionsFilePath = args[1];
 
-        String sourceId = "PC1";
-        String destinationId = "F1";
+        String sourceId = args[2];
+        String destinationId = args[3];
 
         List<Map<String, String>> listOfValues = readDevices(devicesFilePath);
         List<List<String>> listOfConnections = readConnections(connectionsFilePath);
@@ -132,13 +135,16 @@ public class NMS{
             routeManager.addRoute(device1, device2, weight);
         }
 
-        routeManager.printGraph();
+        //routeManager.printGraph();
 
         List<NetworkDevice> path = routeManager.getOptimalRoute(deviceManager.getDeviceById(sourceId), deviceManager.getDeviceById(destinationId));
         if(path.isEmpty()) {
             System.out.println("No path found between devices");
         }
-        printRoute(path);
+        else {
+            System.out.println(sourceId + " to " + destinationId + ": ");
+            printRoute(path);
+        }
     }
 
 }
