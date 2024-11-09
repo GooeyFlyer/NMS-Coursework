@@ -59,19 +59,32 @@ public class NetworkDeviceManager {
         return devices;
     }
 
+    public Map<String, Integer> getDeviceIndexMap() {
+        return deviceIndexMap;
+    }
+
+    public NetworkDevice getDeviceByIndex(int index) {
+        return devices.get(index);
+    }
+
     public NetworkDevice getDeviceById(String deviceId) {
-        return devices.get(getDeviceIndexById(deviceId));
+ 
+        int index = getDeviceIndexById(deviceId);
+        if (index == -1) {
+            System.out.println("Device " + deviceId + " not found");
+            return new NetworkDevice("Error", "Error");
+        }
+        else{
+            return devices.get(index);
+        }
     }
 
     public int getDeviceIndexById(String deviceId) {
-
-        // TODO make error handling better
-
         Integer index = deviceIndexMap.get(deviceId);
         if (index != null) {
             return index;
         } else {
-            throw new IllegalArgumentException("Device ID '" + deviceId + "' not found in deviceIndexMap.");
+            return -1;
         }
     }
 }

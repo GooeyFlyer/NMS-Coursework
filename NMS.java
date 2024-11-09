@@ -21,7 +21,7 @@ public class NMS{
     static int deviceCount;
     static int weight = 1;
             
-    public static List<Map<String, String>> readDevices(String filePath) {
+    public static List<Map<String, String>> readDevicesAndCount(String filePath) {
         int lineCount = 0;
         List<Map<String, String>> listOfValues = new ArrayList<>();
 
@@ -115,7 +115,7 @@ public class NMS{
         String sourceId = args[2];
         String destinationId = args[3];
 
-        List<Map<String, String>> listOfValues = readDevices(devicesFilePath);
+        List<Map<String, String>> listOfValues = readDevicesAndCount(devicesFilePath);
         List<List<String>> listOfConnections = readConnections(connectionsFilePath);
 
         // System.out.println("\n" + listOfConnections.toString());
@@ -135,7 +135,7 @@ public class NMS{
             routeManager.addRoute(device1, device2, weight);
         }
 
-        //routeManager.printGraph();
+        // routeManager.printGraph();
 
         List<NetworkDevice> path = routeManager.getOptimalRoute(deviceManager.getDeviceById(sourceId), deviceManager.getDeviceById(destinationId));
         if(path.isEmpty()) {
@@ -144,7 +144,10 @@ public class NMS{
         else {
             System.out.println(sourceId + " to " + destinationId + ": ");
             printRoute(path);
+            System.out.println();
         }
+
+        System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
     }
 
 }

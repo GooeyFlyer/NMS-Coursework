@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -27,12 +28,10 @@ public class RouteManager {
     }
 
     public void addRoute(NetworkDevice source, NetworkDevice destination, int weight) {
-        List<NetworkDevice> devices = deviceManager.getDevices();
+        int sourceIndex = deviceManager.getDeviceIndexById(source.getDeviceId());
+        int destinationIndex = deviceManager.getDeviceIndexById(destination.getDeviceId());
 
-        int sourceIndex = devices.indexOf(source);
-        int destinationIndex = devices.indexOf(destination);
-
-        if (sourceIndex >= devices.size() || destinationIndex >= devices.size()) {
+        if (sourceIndex >= adjMatrix.length || destinationIndex >= adjMatrix.length) {
             System.out.println("Error: Vertex index out of bounds.");
             return;
         }
@@ -41,17 +40,15 @@ public class RouteManager {
     }
 
     public List<NetworkDevice> getOptimalRoute(NetworkDevice source, NetworkDevice destination) {
-        List<NetworkDevice> devices = deviceManager.getDevices();
-
-        int sourceIndex = devices.indexOf(source);
-        int destinationIndex = devices.indexOf(destination);
+        int sourceIndex = deviceManager.getDeviceIndexById(source.getDeviceId());
+        int destinationIndex = deviceManager.getDeviceIndexById(destination.getDeviceId());
 
         List<NetworkDevice> path = new ArrayList<>();
 
         List<Integer> indexPath = bfs(sourceIndex, destinationIndex);
 
         for (Integer index : indexPath) {
-            path.add(devices.get(index));
+            path.add(deviceManager.getDeviceByIndex(index));
         }
         
         return path;
@@ -66,7 +63,7 @@ public class RouteManager {
 
         while (!queue.isEmpty()) {
             int current = queue.poll();
-            //System.out.println(deviceManager.getDevices().get(current).getDeviceId());
+            // System.out.println(deviceManager.getDeviceByIndex(current).getDeviceId());
             stack.add(current);
 
             if (current == destinationIndex) {
@@ -92,9 +89,7 @@ public class RouteManager {
         return new ArrayList<>(); // no path found
     }
 
-
     // for testing
-
     public void printGraph() {
         List<NetworkDevice> devices = deviceManager.getDevices();
         System.out.print("   ");
@@ -103,9 +98,9 @@ public class RouteManager {
         }
         System.out.println();
 
-        for (int i = 0; i < devices.size(); i++) {
-            System.out.print(devices.get(i).getDeviceId() + " ");
-            for (int j = 0; j < devices.size(); j++) {
+        for (int i = 0; i < adjMatrix.length; i++) {
+            System.out.print(deviceManager.getDeviceByIndex(i).getDeviceId() + " ");
+            for (int j = 0; j < adjMatrix.length; j++) {
                 System.out.print(adjMatrix[i][j] + "  ");
             }
             System.out.println();
