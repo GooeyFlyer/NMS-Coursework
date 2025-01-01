@@ -44,6 +44,7 @@ public class NetworkDeviceManager {
         Integer index = deviceIndexMap.get(deviceId);
         if (index == null) {
             System.out.println("Error: Vertex not found.");
+            support.firePropertyChange("error", "", "Vertex not found.");
             return;
         }
 
@@ -83,14 +84,7 @@ public class NetworkDeviceManager {
     }
 
     public NetworkDevice getDeviceById(String deviceId) {
- 
-        int index = getDeviceIndexById(deviceId);
-        if (index == -1) {
-            throw new IllegalArgumentException("Device " + deviceId + " not found");
-        }
-        else{
-            return devices.get(index);
-        }
+        return devices.get(getDeviceIndexById(deviceId));
     }
 
     public int getDeviceIndexById(String deviceId) {
@@ -98,7 +92,8 @@ public class NetworkDeviceManager {
         if (index != null) {
             return index;
         } else {
-            return -1;
+            support.firePropertyChange("error", "", "Device " + deviceId + " not found");
+            throw new IllegalArgumentException("Device " + deviceId + " not found");
         }
     }
 

@@ -40,6 +40,7 @@ public class RouteManager {
 
         if (sourceIndex >= adjMatrix.length || destinationIndex >= adjMatrix.length) {
             System.out.println("Error: Vertex index out of bounds.");
+            support.firePropertyChange("error", "", "Vertex index out of bounds.");
             return;
         }
 

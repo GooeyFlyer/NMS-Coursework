@@ -3,13 +3,23 @@ import java.beans.PropertyChangeListener;
 import java.lang.System.Logger.Level;
 
 public class Listener implements PropertyChangeListener {
+    LoggingManager loggingManager;
+
+    public Listener() {
+        this.loggingManager = new LoggingManager();
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        String message = "Property changed: " + event.getPropertyName() + ", Old Value: " + event.getOldValue() + ", New Value: " + event.getNewValue();
-        Level level = Level.INFO;
+        
+        if ("error".equals(event.getPropertyName())) {
+            String message = "Error: " + event.getNewValue();
+        loggingManager.logEvent(Level.ERROR, message);
+        }
 
-        LoggingManager loggingManager = new LoggingManager();
-
-        loggingManager.logEvent(level, message);
+        else {
+            String message = "Property changed: " + event.getPropertyName() + ", Old Value: " + event.getOldValue() + ", New Value: " + event.getNewValue();
+            loggingManager.logEvent(Level.INFO, message);
+        }
     }
 }
