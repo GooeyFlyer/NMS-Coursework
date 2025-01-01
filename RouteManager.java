@@ -22,7 +22,7 @@ public class RouteManager {
     private boolean[] visited;
     private PropertyChangeSupport support;
 
-    public RouteManager(NetworkDeviceManager deviceManager, int vertexCount, PropertyChangeListener listener) {
+    public RouteManager(NetworkDeviceManager deviceManager, int vertexCount, Listener listener) {
         this.deviceManager = deviceManager;
         this.visited = new boolean[vertexCount];
         adjMatrix = new int[vertexCount][vertexCount];
@@ -32,6 +32,7 @@ public class RouteManager {
     }
 
     public void addDevice(NetworkDevice device) {
+        // add new column and row to matrix
     }
 
     public void addRoute(NetworkDevice source, NetworkDevice destination, int weight) {
@@ -50,7 +51,7 @@ public class RouteManager {
             adjMatrix[sourceIndex][destinationIndex] = 1;
             adjMatrix[destinationIndex][sourceIndex] = 1;
         }
-        support.firePropertyChange("route between " + source.getDeviceId() + " and " + destination.getDeviceId(), oldValueSourceDestination, adjMatrix[sourceIndex][destinationIndex]);
+        support.firePropertyChange("Added route between " + source.getDeviceId() + " and " + destination.getDeviceId(), oldValueSourceDestination, adjMatrix[sourceIndex][destinationIndex]);
     }
 
     public List<NetworkDevice> getOptimalRoute(NetworkDevice source, NetworkDevice destination) {
@@ -64,9 +65,7 @@ public class RouteManager {
         for (Integer index : indexPath) {
             path.add(deviceManager.getDeviceByIndex(index));
         }
-        
         return path;
-
     }
 
     private List<Integer> bfs(int sourceIndex, int destinationIndex) {

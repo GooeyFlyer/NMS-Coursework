@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import devices.NetworkDevice;
@@ -24,7 +23,7 @@ public class NetworkDeviceManager {
     private Map<String, Integer> deviceIndexMap;
     private PropertyChangeSupport support;
 
-    public NetworkDeviceManager(int vertexCount, PropertyChangeListener listener) {
+    public NetworkDeviceManager(int vertexCount, Listener listener) {
         devices = new ArrayList<>(vertexCount);
         deviceIndexMap = new HashMap<>(vertexCount);
 
@@ -33,20 +32,14 @@ public class NetworkDeviceManager {
     }
 
     public void addDevice(NetworkDevice device) {
-        List<NetworkDevice> oldDevices = devices;
         devices.add(device);
         deviceIndexMap.put(device.getDeviceId(), devices.size() -1);
-        support.firePropertyChange("devices", oldDevices.toString(), devices.toString());
+
+        support.firePropertyChange("Added Device", null, device.getDeviceId());
     }
 
     public void removeDevice(String deviceId) {
-        List<NetworkDevice> oldDevices = devices;
-        Integer index = deviceIndexMap.get(deviceId);
-        if (index == null) {
-            System.out.println("Error: Vertex not found.");
-            support.firePropertyChange("error", "", "Vertex not found.");
-            return;
-        }
+        Integer index = getDeviceIndexById(deviceId);
 
         // Remove the device from the list and map
         devices.remove((int) index);
@@ -57,7 +50,7 @@ public class NetworkDeviceManager {
         for (int i = 0; i < devices.size(); i++) {
             deviceIndexMap.put(devices.get(i).getDeviceId(), i);
         }
-        support.firePropertyChange("devices", oldDevices.toString(), devices.toString());
+        support.firePropertyChange("Removed Device", deviceId, null);
     }
 
     /* public void configureDevice(String deviceId, DeviceConfiguration config) {
@@ -75,6 +68,14 @@ public class NetworkDeviceManager {
 
     public Map<String, Integer> getDeviceIndexMap() {
         return deviceIndexMap;
+    }
+
+    public String getDevicesAsString() {
+        String output = "";
+        for (NetworkDevice device : devices) {
+            output = output + device.getDeviceId() + " ";
+        }
+        return output;
     }
 
     public NetworkDevice getDeviceByIndex(int index) {
