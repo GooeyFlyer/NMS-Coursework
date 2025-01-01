@@ -106,16 +106,6 @@ public class NMS{
             }
         }
     }
-
-    public static NetworkDevice createDevice(Map<String, String> values, NetworkDeviceFactory networkDeviceFactory){
-        String deviceId = values.get("deviceId");
-        String name = values.get("name");
-
-        return networkDeviceFactory.getDevice(deviceId, name);
-
-        
-
-    }
     
     public static void main(String[] args){
 
@@ -132,13 +122,14 @@ public class NMS{
 
         // System.out.println("\n" + listOfConnections.toString());
         
-        NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount);
-        RouteManager routeManager = new RouteManager(deviceManager, deviceCount);
+        Listener listener = new Listener();
+        NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount, listener);
+        RouteManager routeManager = new RouteManager(deviceManager, deviceCount, listener);
 
         // making devices
         NetworkDeviceFactory networkDeviceFactory = new NetworkDeviceFactory();
         for (Map<String,String> values : listOfValues) {
-            NetworkDevice device = createDevice(values, networkDeviceFactory);
+            NetworkDevice device = networkDeviceFactory.getDevice(values.get("deviceId"), values.get("name"));
             deviceManager.addDevice(device);
         }
 
@@ -162,7 +153,13 @@ public class NMS{
             System.out.println();
         }
 
+        // Error testing
         //System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
+
+        System.out.println(deviceManager.getDeviceById("PC1").getMAC());
+
+        // ConsoleLogging consoleLogging = new ConsoleLogging(new BaseLogging());
+        // consoleLogging.log(level, "console 2");
     }
 
 }

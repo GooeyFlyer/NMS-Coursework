@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import devices.NetworkDevice;
 
@@ -20,18 +22,25 @@ public class NetworkDeviceManager {
     
     private List<NetworkDevice> devices;
     private Map<String, Integer> deviceIndexMap;
+    private PropertyChangeSupport support;
 
-    public NetworkDeviceManager(int vertexCount) {
+    public NetworkDeviceManager(int vertexCount, PropertyChangeListener listener) {
         devices = new ArrayList<>(vertexCount);
         deviceIndexMap = new HashMap<>(vertexCount);
+
+        support = new PropertyChangeSupport(this);
+        support.addPropertyChangeListener(listener);
     }
 
     public void addDevice(NetworkDevice device) {
+        List<NetworkDevice> oldDevices = devices;
         devices.add(device);
         deviceIndexMap.put(device.getDeviceId(), devices.size() -1);
+        support.firePropertyChange("devices", oldDevices.toString(), devices.toString());
     }
 
     public void removeDevice(String deviceId) {
+        List<NetworkDevice> oldDevices = devices;
         Integer index = deviceIndexMap.get(deviceId);
         if (index == null) {
             System.out.println("Error: Vertex not found.");
@@ -47,14 +56,18 @@ public class NetworkDeviceManager {
         for (int i = 0; i < devices.size(); i++) {
             deviceIndexMap.put(devices.get(i).getDeviceId(), i);
         }
+        support.firePropertyChange("devices", oldDevices.toString(), devices.toString());
     }
 
     public void configureDevice(String deviceId, DeviceConfiguration config) {
         NetworkDevice device = getDeviceById(deviceId);
+        NetworkDevice oldDevice = device;
         device.setConnectionInterface(config.getConnectionInterface());
         device.setIPV4(config.getIPV4());
         device.setMAC(config.getMAC());
         device.setSubnet(config.getSubnet());
+
+        support.firePropertyChange(deviceId, oldDevice.toString(), device.toString());
     }
 
     public List<NetworkDevice> getDevices() {
@@ -73,8 +86,7 @@ public class NetworkDeviceManager {
  
         int index = getDeviceIndexById(deviceId);
         if (index == -1) {
-            System.out.println("Device " + deviceId + " not found");
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException("Device " + deviceId + " not found");
         }
         else{
             return devices.get(index);

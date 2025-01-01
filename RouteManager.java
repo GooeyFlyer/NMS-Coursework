@@ -1,3 +1,5 @@
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,11 +21,15 @@ public class RouteManager {
     NetworkDeviceManager deviceManager;
     private int[][] adjMatrix;
     private boolean[] visited;
+    private PropertyChangeSupport support;
 
-    public RouteManager(NetworkDeviceManager deviceManager, int vertexCount) {
+    public RouteManager(NetworkDeviceManager deviceManager, int vertexCount, PropertyChangeListener listener) {
         this.deviceManager = deviceManager;
         this.visited = new boolean[vertexCount];
         adjMatrix = new int[vertexCount][vertexCount];
+
+        support = new PropertyChangeSupport(this);
+        support.addPropertyChangeListener(listener);
     }
 
     public void addDevice(NetworkDevice device) {
@@ -38,10 +44,13 @@ public class RouteManager {
             return;
         }
 
+        int oldValueSourceDestination = adjMatrix[sourceIndex][destinationIndex];
+
         if ((adjMatrix[sourceIndex][destinationIndex] != 1) || (adjMatrix[destinationIndex][sourceIndex] != 1)){
             adjMatrix[sourceIndex][destinationIndex] = 1;
             adjMatrix[destinationIndex][sourceIndex] = 1;
         }
+        support.firePropertyChange("route between " + source.getDeviceId() + " and " + destination.getDeviceId(), oldValueSourceDestination, adjMatrix[sourceIndex][destinationIndex]);
     }
 
     public List<NetworkDevice> getOptimalRoute(NetworkDevice source, NetworkDevice destination) {
