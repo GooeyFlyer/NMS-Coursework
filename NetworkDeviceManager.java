@@ -74,7 +74,7 @@ public class NetworkDeviceManager {
         int index = getDeviceIndexById(deviceId);
         if (index == -1) {
             System.out.println("Device " + deviceId + " not found");
-            return new NetworkDevice("Error", "Error");
+            throw new IllegalArgumentException("");
         }
         else{
             return devices.get(index);
@@ -88,5 +88,9 @@ public class NetworkDeviceManager {
         } else {
             return -1;
         }
+    }
+
+    public int getDeviceIndexByObject(NetworkDevice networkDevice){
+        return getDeviceIndexById(networkDevice.getDeviceId());
     }
 }

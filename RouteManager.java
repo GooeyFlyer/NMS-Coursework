@@ -30,8 +30,8 @@ public class RouteManager {
     }
 
     public void addRoute(NetworkDevice source, NetworkDevice destination, int weight) {
-        int sourceIndex = deviceManager.getDeviceIndexById(source.getDeviceId());
-        int destinationIndex = deviceManager.getDeviceIndexById(destination.getDeviceId());
+        int sourceIndex = deviceManager.getDeviceIndexByObject(source);
+        int destinationIndex = deviceManager.getDeviceIndexByObject(destination);
 
         if (sourceIndex >= adjMatrix.length || destinationIndex >= adjMatrix.length) {
             System.out.println("Error: Vertex index out of bounds.");
@@ -45,8 +45,8 @@ public class RouteManager {
     }
 
     public List<NetworkDevice> getOptimalRoute(NetworkDevice source, NetworkDevice destination) {
-        int sourceIndex = deviceManager.getDeviceIndexById(source.getDeviceId());
-        int destinationIndex = deviceManager.getDeviceIndexById(destination.getDeviceId());
+        int sourceIndex = deviceManager.getDeviceIndexByObject(source);
+        int destinationIndex = deviceManager.getDeviceIndexByObject(destination);
 
         List<NetworkDevice> path = new ArrayList<>();
 

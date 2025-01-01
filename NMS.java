@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import devices.NetworkDevice;
+import devices.*;
 
 /**
  * This is the primary class of the system.
@@ -106,6 +106,16 @@ public class NMS{
             }
         }
     }
+
+    public static NetworkDevice createDevice(Map<String, String> values, NetworkDeviceFactory networkDeviceFactory){
+        String deviceId = values.get("deviceId");
+        String name = values.get("name");
+
+        return networkDeviceFactory.getDevice(deviceId, name);
+
+        
+
+    }
     
     public static void main(String[] args){
 
@@ -125,11 +135,14 @@ public class NMS{
         NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount);
         RouteManager routeManager = new RouteManager(deviceManager, deviceCount);
 
+        // making devices
+        NetworkDeviceFactory networkDeviceFactory = new NetworkDeviceFactory();
         for (Map<String,String> values : listOfValues) {
-            NetworkDevice device = new NetworkDevice(values.get("deviceId"), values.get("name"));
+            NetworkDevice device = createDevice(values, networkDeviceFactory);
             deviceManager.addDevice(device);
         }
 
+        // making connections
         for (List<String> connection : listOfConnections) {
             NetworkDevice device1 = deviceManager.getDeviceById(connection.get(0));
             NetworkDevice device2 = deviceManager.getDeviceById(connection.get(1));
@@ -149,7 +162,7 @@ public class NMS{
             System.out.println();
         }
 
-        System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
+        //System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
     }
 
 }
