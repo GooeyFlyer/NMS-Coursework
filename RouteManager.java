@@ -35,8 +35,11 @@ public class RouteManager {
             System.out.println("Error: Vertex index out of bounds.");
             return;
         }
-        adjMatrix[sourceIndex][destinationIndex] = 1;
-        adjMatrix[destinationIndex][sourceIndex] = 1;
+
+        if ((adjMatrix[sourceIndex][destinationIndex] != 1) || (adjMatrix[destinationIndex][sourceIndex] != 1)){
+            adjMatrix[sourceIndex][destinationIndex] = 1;
+            adjMatrix[destinationIndex][sourceIndex] = 1;
+        }
     }
 
     public List<NetworkDevice> getOptimalRoute(NetworkDevice source, NetworkDevice destination) {
