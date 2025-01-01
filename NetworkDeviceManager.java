@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import devices.NetworkDevice;
+
 /**
  * This class acts as a manager class through which
  * the devices represented by NetworkDevice shall be

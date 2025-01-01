@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import devices.NetworkDevice;
+
 /**
  * This is the primary class of the system.
  * It will be used to launch the system and perform

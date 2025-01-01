@@ -1,4 +1,5 @@
-public class NetworkDevice {
+package devices;
+public abstract class NetworkDevice {
     String deviceId;
     String name;
     String connectionInterface;
