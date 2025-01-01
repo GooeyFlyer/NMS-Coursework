@@ -60,16 +60,14 @@ public class NetworkDeviceManager {
         support.firePropertyChange("devices", oldDevices.toString(), devices.toString());
     }
 
-    public void configureDevice(String deviceId, DeviceConfiguration config) {
+    /* public void configureDevice(String deviceId, DeviceConfiguration config) {
         NetworkDevice device = getDeviceById(deviceId);
         NetworkDevice oldDevice = device;
         device.setConnectionInterface(config.getConnectionInterface());
         device.setIPV4(config.getIPV4());
         device.setMAC(config.getMAC());
         device.setSubnet(config.getSubnet());
-
-        support.firePropertyChange(deviceId, oldDevice.toString(), device.toString());
-    }
+    } */
 
     public List<NetworkDevice> getDevices() {
         return devices;

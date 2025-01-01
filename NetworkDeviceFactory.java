@@ -1,17 +1,18 @@
-import devices.Firewall;
-import devices.Laptop;
-import devices.NetworkDevice;
-import devices.PC;
-import devices.Router;
-import devices.Server;
-import devices.Switch;
-import devices.WAP;
+import java.util.Map;
 
-public class NetworkDeviceFactory {
-    public NetworkDevice getDevice(String deviceId, String name) {
+import devices.*;
+
+public class NetworkDeviceFactory implements Factory {
+
+    @Override
+    public NetworkDevice getDevice(Map<String, String> values) {
+        String deviceId = values.get("deviceId");
+        String name = values.get("name");
+
         if (name == null) {
             return null;
         }
+    
         switch (name.toUpperCase()) {
             case "FIREWALL":
                 return new Firewall(deviceId, name);

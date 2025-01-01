@@ -127,9 +127,15 @@ public class NMS{
         RouteManager routeManager = new RouteManager(deviceManager, deviceCount, listener);
 
         // making devices
-        NetworkDeviceFactory networkDeviceFactory = new NetworkDeviceFactory();
+        FactoryControl factoryControl = new FactoryControl();
         for (Map<String,String> values : listOfValues) {
-            NetworkDevice device = networkDeviceFactory.getDevice(values.get("deviceId"), values.get("name"));
+            if (values.containsKey("Subnet")) {
+                factoryControl.setCommand(new NetworkDeviceFactoryConfigurated());
+            }
+            else {
+                factoryControl.setCommand(new NetworkDeviceFactoryConfigurated());
+            }
+            NetworkDevice device = factoryControl.getDevice(values);
             deviceManager.addDevice(device);
         }
 
@@ -154,7 +160,7 @@ public class NMS{
         }
 
         // Error testing
-        System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
+        //System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
 
         System.out.println(deviceManager.getDeviceById("PC1").getMAC());
 

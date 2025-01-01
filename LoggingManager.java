@@ -16,6 +16,6 @@ public class LoggingManager {
     }
 
     public void logEvent(Level level, String message) {
-        logger.log(level, message);
+        //logger.log(level, message);
     }
 }
