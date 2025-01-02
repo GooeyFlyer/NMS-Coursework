@@ -7,7 +7,7 @@ public class FactoryControl {
     private Factory factory;
 
     // Sets the command for the button
-    public void setCommand(Factory factory) {
+    public void setFactory(Factory factory) {
         this.factory = factory;
     }
 

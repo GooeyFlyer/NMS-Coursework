@@ -130,10 +130,10 @@ public class NMS{
         FactoryControl factoryControl = new FactoryControl();
         for (Map<String,String> values : listOfValues) {
             if (values.containsKey("Subnet")) {
-                factoryControl.setCommand(new NetworkDeviceFactoryConfigurated());
+                factoryControl.setFactory(new NetworkDeviceFactoryConfigurated());
             }
             else {
-                factoryControl.setCommand(new NetworkDeviceFactoryConfigurated());
+                factoryControl.setFactory(new NetworkDeviceFactory());
             }
             NetworkDevice device = factoryControl.getDevice(values);
             deviceManager.addDevice(device);
