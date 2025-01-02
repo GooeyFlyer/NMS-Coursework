@@ -12,7 +12,7 @@ public class FileMessage extends MessageDecorator{
     public String getMessage() {
         String timestamp = getCurrentTimestamp();
         String message = logMessage.getMessage();
-        return "\n[" + timestamp + "] " + "FileLogCommand " + "log\n" + logMessage.getLevel() + ": " + message;
+        return "\n[" + timestamp + "] " + "logging.FileLogCommand " + "log\n" + logMessage.getLevel() + ": " + message;
     }
 
     // Helper method to get the current timestamp in a readable format

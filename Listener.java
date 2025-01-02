@@ -19,8 +19,9 @@ public class Listener implements PropertyChangeListener {
         // Currently it is set to always use Console Logging,
         // but can be changed to get the user's choice by switching the commented line.
         
-        LogCommand logCommand = new ConsoleLogCommand();
-        // REMOVE COMMENT TO ALLOW USER CHOICE OF LOGGING: LogCommand logCommand = getLogCommandChoice();
+        //LogCommand logCommand = new ConsoleLogCommand();
+        //REMOVE COMMENT TO ALLOW USER CHOICE OF LOGGING: 
+        LogCommand logCommand = getLogCommandChoice();
         
         loggingManager.setLogCommand(logCommand);
     }

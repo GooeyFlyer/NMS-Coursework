@@ -3,8 +3,6 @@ package logging;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.logging.*;
 
 import logging.decorating.FileMessage;
@@ -19,7 +17,7 @@ public class FileLogCommand implements LogCommand{
             // Clears the file
             FileWriter fileWriter = new FileWriter(LOG_FILE, false);
             fileWriter.close();
-            
+
         } catch (IOException e) {
             System.err.println("An error occurred while writing to the log file: " + e.getMessage());
         }
