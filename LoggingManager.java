@@ -12,7 +12,11 @@ public class LoggingManager {
     private Logger logger;
 
     public LoggingManager() {
-        logger = System.getLogger(getClass().getName());
+    }
+
+    public Logger setLogger(Logger logger){
+        this.logger = logger;
+        return this.logger;
     }
 
     public void logEvent(Level level, String message) {
