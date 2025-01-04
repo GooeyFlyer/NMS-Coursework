@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import devices.*;
+import factory.FactoryControl;
+import factory.NetworkDeviceFactory;
+import factory.NetworkDeviceFactoryConfigurated;
+import factory.devices.*;
 
 /**
  * This is the primary class of the system.

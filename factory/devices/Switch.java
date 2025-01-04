@@ -1,4 +1,4 @@
-package devices;
+package factory.devices;
 public class Switch extends NetworkDevice{
 
     public Switch(String deviceId, String name) {

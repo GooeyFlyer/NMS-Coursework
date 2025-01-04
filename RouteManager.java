@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import devices.NetworkDevice;
+import factory.devices.NetworkDevice;
 
 /**
  * This class primarily does the calculation of

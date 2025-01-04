@@ -2,9 +2,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.beans.PropertyChangeSupport;
 
-import devices.NetworkDevice;
+import factory.devices.NetworkDevice;
+
+import java.beans.PropertyChangeSupport;
 
 /**
  * This class acts as a manager class through which

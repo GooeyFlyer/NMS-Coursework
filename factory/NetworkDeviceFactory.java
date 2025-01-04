@@ -1,6 +1,7 @@
+package factory;
 import java.util.Map;
 
-import devices.*;
+import factory.devices.*;
 
 public class NetworkDeviceFactory implements Factory {
 

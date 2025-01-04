@@ -1,4 +1,4 @@
-package devices;
+package factory.devices;
 public abstract class NetworkDevice {
     private String deviceId;
     private String name;

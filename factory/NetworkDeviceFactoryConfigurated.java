@@ -1,6 +1,7 @@
+package factory;
 import java.util.Map;
 
-import devices.NetworkDevice;
+import factory.devices.NetworkDevice;
 
 public class NetworkDeviceFactoryConfigurated implements Factory{
 
