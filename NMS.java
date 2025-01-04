@@ -10,6 +10,7 @@ import factory.FactoryControl;
 import factory.NetworkDeviceFactory;
 import factory.NetworkDeviceFactoryConfigurated;
 import factory.devices.*;
+import logging.Listener;
 
 /**
  * This is the primary class of the system.
