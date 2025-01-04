@@ -1,5 +1,5 @@
+package logging;
 import java.util.logging.*;
-import logging.LogCommand;
 
 /**
  * This class does the logging of the actions performed by the

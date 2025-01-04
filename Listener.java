@@ -6,6 +6,7 @@ import logging.ConsoleLogCommand;
 import logging.DualLogCommand;
 import logging.FileLogCommand;
 import logging.LogCommand;
+import logging.LoggingManager;
 
 import java.util.Scanner;
 
