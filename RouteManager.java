@@ -16,7 +16,7 @@ import devices.NetworkDevice;
  * NetworkDeviceManager. 
  */
 public class RouteManager {
-    NetworkDeviceManager deviceManager;
+    private NetworkDeviceManager deviceManager;
     private int[][] adjMatrix;
     private boolean[] visited;
     private PropertyChangeSupport support;

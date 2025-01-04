@@ -3,8 +3,8 @@ import java.util.logging.Level;
 
 public class LogMessage implements MessageString{
 
-    String message;
-    Level level;
+    protected String message;
+    protected Level level;
     public LogMessage(String  message, Level level){
         this.message = message;
         this.level = level;

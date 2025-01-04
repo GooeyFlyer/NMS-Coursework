@@ -1,11 +1,11 @@
 package devices;
 public abstract class NetworkDevice {
-    String deviceId;
-    String name;
-    String connectionInterface;
-    String MAC;
-    String IPV4;
-    String subnet;
+    private String deviceId;
+    private String name;
+    private String connectionInterface;
+    private String MAC;
+    private String IPV4;
+    private String subnet;
 
     public NetworkDevice(String deviceId, String name) {
         this.deviceId = deviceId;

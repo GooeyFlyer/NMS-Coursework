@@ -10,7 +10,7 @@ import logging.LogCommand;
 import java.util.Scanner;
 
 public class Listener implements PropertyChangeListener {
-    LoggingManager loggingManager;
+    private LoggingManager loggingManager;
 
     public Listener() {
         this.loggingManager = new LoggingManager();
@@ -25,6 +25,7 @@ public class Listener implements PropertyChangeListener {
         loggingManager.setLogCommand(logCommand);
     }
 
+    // Method to get user input for logging type.
     public LogCommand getLogCommandChoice() {
         LogCommand logCommand = null;
         Scanner scanner = new Scanner(System.in);

@@ -162,6 +162,7 @@ public class NMS{
         // Error testing
         //System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
 
+        System.out.println("\n PC1 MAC address test:");
         System.out.println(deviceManager.getDeviceById("PC1").getMAC());
 
         // ConsoleLogging consoleLogging = new ConsoleLogging(new BaseLogging());

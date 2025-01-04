@@ -18,7 +18,6 @@ import devices.NetworkDevice;
  * other class.
  */
 public class NetworkDeviceManager {
-    
     private List<NetworkDevice> devices;
     private Map<String, Integer> deviceIndexMap;
     private PropertyChangeSupport support;
