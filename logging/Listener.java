@@ -1,7 +1,9 @@
 package logging;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.logging.*;
+
+import java.util.logging.Level;
+
 import java.util.Scanner;
 
 public class Listener implements PropertyChangeListener {

@@ -3,11 +3,10 @@ package logging;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
-import logging.decorating.FileMessage;
-import logging.decorating.LogMessage;
-import logging.decorating.MessageString;
+import logging.decorating.*;
 
 public class FileLogCommand implements LogCommand{
     private static final String LOG_FILE = "logfile.txt";  // Specify the log file

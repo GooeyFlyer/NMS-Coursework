@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import factory.FactoryControl;
-import factory.NetworkDeviceFactory;
-import factory.NetworkDeviceFactoryConfigurated;
-import factory.devices.*;
+import factory.*;
+import factory.devices.NetworkDevice;
 import logging.Listener;
 
 /**

@@ -1,5 +1,6 @@
 package logging;
-import java.util.logging.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * This class does the logging of the actions performed by the
