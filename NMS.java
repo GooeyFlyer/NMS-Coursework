@@ -137,8 +137,7 @@ public class NMS{
             else {
                 factoryControl.setFactory(false);
             }
-            NetworkDevice device = factoryControl.getDevice(values);
-            deviceManager.addDevice(device);
+            deviceManager.addDevice(factoryControl.getDevice(values));
         }
 
         // making connections
