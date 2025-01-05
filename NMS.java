@@ -1,4 +1,5 @@
 import java.beans.PropertyChangeEvent;
+import java.beans.beancontext.BeanContextSupport;
 import java.util.List;
 import java.util.Map;
 
@@ -49,9 +50,9 @@ public class NMS{
             sourceId = args[2];
             destinationId = args[3];
         } catch (Exception e) {
-            listener.propertyChange(new PropertyChangeEvent(null, "error", "", "input entered incorrectly"));
-            e.printStackTrace();
-            throw new IllegalStateException();
+            String message = "Inputs entered incorrectly";
+            listener.propertyChange(new PropertyChangeEvent(new BeanContextSupport(), "error", "", message));
+            throw new IllegalArgumentException(message);
         }
         
         ReadFiles readFiles = new ReadFiles(listener);

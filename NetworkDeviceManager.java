@@ -84,7 +84,7 @@ public class NetworkDeviceManager {
             return index;
         } else {
             if (devices.size() == 0) {
-                String message = "devices list empty. Check devices.txt";
+                String message = "devices list empty. Check devices.txt or inputs";
                 support.firePropertyChange("error", "", message);
                 throw new IllegalArgumentException(message);
             }

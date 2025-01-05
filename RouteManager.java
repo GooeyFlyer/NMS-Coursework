@@ -66,7 +66,7 @@ public class RouteManager {
 
         if (indexPath.isEmpty()) {
             if (!adjMatrixChanged) {
-                support.firePropertyChange("error", "", "adjMatrix empty. Check connections.txt");
+                support.firePropertyChange("error", "", "adjMatrix empty. Check connections.txt or inputs");
             }
             else {
                 support.firePropertyChange("warn", "", "No path found between devices " + source.getDeviceId() + " and " + destination.getDeviceId());

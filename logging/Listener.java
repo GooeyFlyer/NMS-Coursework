@@ -1,7 +1,6 @@
 package logging;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.ProcessHandle.Info;
 import java.util.logging.Level;
 
 import java.util.Scanner;
