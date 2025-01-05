@@ -59,9 +59,15 @@ public class ReadFiles {
 
                     // Extract just the values
                     for (String pair : pairs) {
-                        // System.out.println(pair);
+                        //System.out.println(pair);
                         String[] keyValue = pair.split("=");
+                        //System.out.println(keyValue.length);
                         if (keyValue.length == 2) {
+                            values.put(keyValue[0].trim(), keyValue[1].trim()); // Get the value part and trim whitespace
+                        }
+                        else if(pair.contains("IPV4:")) {
+                            System.out.println(pair);
+                            keyValue = pair.split(":");
                             values.put(keyValue[0].trim(), keyValue[1].trim()); // Get the value part and trim whitespace
                         }
                         else {
@@ -69,7 +75,6 @@ public class ReadFiles {
                         }
                     }
                 }
-
                 listOfValues.add(values);
             }
         } catch (IOException e) {
@@ -83,6 +88,7 @@ public class ReadFiles {
             throw new ArrayIndexOutOfBoundsException(message);
         }
 
+        System.out.println(listOfValues.size());
         deviceCount = lineCount;
         return listOfValues;
     }
@@ -111,7 +117,6 @@ public class ReadFiles {
             e.printStackTrace();
         }
 
-        System.out.println(listOfLists.toString());
         return listOfLists; // Return the list of lists
     }
 
