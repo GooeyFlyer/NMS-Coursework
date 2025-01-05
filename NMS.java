@@ -1,3 +1,4 @@
+import java.beans.PropertyChangeEvent;
 import java.util.List;
 import java.util.Map;
 
@@ -33,18 +34,26 @@ public class NMS{
     }
     
     public static void main(String[] args){
-
-        //make sure you use args instead of inputs
-
-        String devicesFilePath = args[0];
-        String connectionsFilePath = args[1];
-
-        String sourceId = args[2];
-        String destinationId = args[3];
-
-        // System.out.println("\n" + listOfConnections.toString());
         
         Listener listener = new Listener();
+
+        String devicesFilePath;
+        String connectionsFilePath;
+
+        String sourceId;
+        String destinationId;
+        try {
+            devicesFilePath = args[0];
+            connectionsFilePath = args[1];
+
+            sourceId = args[2];
+            destinationId = args[3];
+        } catch (Exception e) {
+            listener.propertyChange(new PropertyChangeEvent(null, "error", "", "input entered incorrectly"));
+            e.printStackTrace();
+            throw new IllegalStateException();
+        }
+        
         ReadFiles readFiles = new ReadFiles(listener);
 
         List<Map<String, String>> listOfValues = readFiles.readDevicesAndCount(devicesFilePath);
