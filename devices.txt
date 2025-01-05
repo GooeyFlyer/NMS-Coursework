@@ -13,5 +13,5 @@ PC3, PC,
 PC4, PC, Config:{Interface=Ethernet;MAC=5D:57:91:46:E3:E7;IPV4:10.1.0.1;Subnet=255.0.0.0;}
 PC5, PC, Config:{Interface=FastEthernet0;MAC=F1:58:A8:2A:0E:66;IPV4:10.1.0.5;Subnet=255.255.0.0;}
 PC6, PC, Config:{Interface= Ethernet;MAC=C2:6E:5E:E5:AF:8C;IPV4:10.0.0.2;Subnet=255.0.0.0;}
-PC7, PC,
+PC7, PC
 PC8, PC, Config:{Interface=FastEthernet0;MAC=B8:70:F5:9B:BB:0F;IPV4:10.10.0.2;Subnet=255.0.0.0;}
