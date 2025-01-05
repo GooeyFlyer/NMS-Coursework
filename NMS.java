@@ -17,9 +17,14 @@ import logging.Listener;
  * NOTE: DO NOT MOVE THIS CLASS TO ANY PACKAGE.
  *
  */
-
 public class NMS{
 
+    /**
+     * The function `printRoute` prints the device IDs in a list of network devices, with "to" between
+     * each device except for the last one.
+     * 
+     * @param route A list of NetworkDevice objects representing the route to be printed.
+     */
     public static void printRoute(List<NetworkDevice> route) {
         for (NetworkDevice device : route) {
             System.out.print(device.getDeviceId());
@@ -30,7 +35,15 @@ public class NMS{
     }
 
     // Calculations for weight to be changed later, for now, just returns 1
-    public static int calculateWeight(String name1, String name2) {
+    /**
+     * The function `calculateWeight` takes two deviceIds and calculates the weight of their connection.
+     * For now it returns only the value 1, but can be changed as future developments.
+     * 
+     * @param deviceId1 The id of the first device
+     * @param deviceId2 The id of the second device
+     * @return The weight of the connection between devices.
+     */
+    public static int calculateWeight(String deviceId1, String deviceId2) {
         return 1;
     }
     

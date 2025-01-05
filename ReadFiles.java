@@ -9,21 +9,45 @@ import java.util.Map;
 
 import logging.Listener;
 
+
+/**
+ * The `ReadFiles` class in Java reads data from files, handles line format errors, and provides
+ * methods to retrieve device information and connection details.
+ */
 public class ReadFiles {
     private static PropertyChangeSupport support;
     private static int deviceCount;
 
+    /**
+     * Constructor for the ReadFiles class. Assignes a listener.
+     * 
+     * @param listener The Listener, also used by NMS, to log events. 
+     */
     public ReadFiles(Listener listener) {
         support = new PropertyChangeSupport(this);
         support.addPropertyChangeListener(listener);
     }
 
+    /**
+     * The method `lineFormatErrorCall` logs and throws an error if the line format for files is incorrect.
+     * 
+     * @param filePath The path of the file. Of type String.
+     * @param lineCount The line number in the file that has the issue. Of type int
+     * @param line The actual line in the file that has the issue. Of type String
+     */
     public void lineFormatErrorCall(String filePath, int lineCount, String line) {
         String message = "Error: "+ filePath +" Line format is incorrect. Line "+lineCount+": " + line;
         support.firePropertyChange("error", "", message);
         throw new IllegalArgumentException(message);
     }
     
+    /**
+     * The method `readDevicesAndCount` reads the devices.txt file, extracts the values, then returns a list of devices.
+     * Also contains error checking and handling to ensure smooth functionality.
+     * 
+     * @param filePath The path of the devices.txt file. Of type String.
+     * @return A list of devices, each device is a dictionary of values for the device.
+     */
     public List<Map<String, String>> readDevicesAndCount(String filePath) {
         int lineCount = 0;
         List<Map<String, String>> listOfValues = new ArrayList<>();
@@ -88,11 +112,17 @@ public class ReadFiles {
             throw new ArrayIndexOutOfBoundsException(message);
         }
 
-        System.out.println(listOfValues.size());
         deviceCount = lineCount;
         return listOfValues;
     }
 
+    /**
+     * The method `readConnections` reads the connections.txt file, extracts the values, then returns a list of connections.
+     * Also contains error checking and handling to ensure smooth functionality.
+     * 
+     * @param filePath The path of the connections.txt file. Of type String.
+     * @return A list of connections between devices.
+     */
     public List<List<String>> readConnections(String filePath) {
         List<List<String>> listOfLists = new ArrayList<>();
 
@@ -117,9 +147,15 @@ public class ReadFiles {
             e.printStackTrace();
         }
 
+        System.out.println(listOfLists);
         return listOfLists; // Return the list of lists
     }
 
+    /**
+     * The function `getDeviceCount` returns the number of devices.
+     * 
+     * @return Returns the value of the variable `deviceCount`.
+     */
     public int getDeviceCount() {
         return deviceCount;
     }
