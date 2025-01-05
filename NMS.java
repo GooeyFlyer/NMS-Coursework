@@ -23,7 +23,6 @@ import logging.Listener;
 
 public class NMS{
     static int deviceCount;
-    static int weight = 1;
             
     public static List<Map<String, String>> readDevicesAndCount(String filePath) {
         int lineCount = 0;
@@ -108,6 +107,11 @@ public class NMS{
             }
         }
     }
+
+    // Calculations for weight to be changed later, for now, just returns 1
+    public static int calculateWeight(String name1, String name2) {
+        return 1;
+    }
     
     public static void main(String[] args){
 
@@ -145,7 +149,7 @@ public class NMS{
             NetworkDevice device1 = deviceManager.getDeviceById(connection.get(0));
             NetworkDevice device2 = deviceManager.getDeviceById(connection.get(1));
 
-            routeManager.addRoute(device1, device2, weight);
+            routeManager.addRoute(device1, device2, calculateWeight(device1.getName(), device2.getName()));
         }
 
         // routeManager.printGraph();
