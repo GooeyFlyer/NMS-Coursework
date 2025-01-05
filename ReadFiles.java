@@ -60,8 +60,14 @@ public class ReadFiles {
                 listOfValues.add(values);
             }
         } catch (IOException e) {
-            support.firePropertyChange("error", "", "An error occurred while reading the file: " + filePath);
+            String message = "An error occurred accessing the file: " + filePath;
+            support.firePropertyChange("error", "", message);
             e.printStackTrace();
+        } catch(ArrayIndexOutOfBoundsException e) {
+            String message = "An error occurred with the contents of the file: " + filePath;
+            support.firePropertyChange("error", "", message);
+            e.printStackTrace();
+            throw new ArrayIndexOutOfBoundsException(message);
         }
 
         deviceCount = lineCount;

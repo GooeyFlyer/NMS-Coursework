@@ -33,10 +33,22 @@ public class NetworkDeviceManager {
     }
 
     public void addDevice(NetworkDevice device) {
-        devices.add(device);
-        deviceIndexMap.put(device.getDeviceId(), devices.size() -1);
+        if (!device.getDeviceId().equals("error")) {
+            devices.add(device);
+            deviceIndexMap.put(device.getDeviceId(), devices.size() -1);
 
-        support.firePropertyChange("Added Device", null, device.getDeviceId());
+            support.firePropertyChange("Added Device", null, device.getDeviceId());
+        }
+        else {
+            String message =  "Cannot create device of type " + device.getName();
+
+            if (device.getName().equals("")) {
+                message = message + "[blank space detected - check devices.txt]";
+            }
+            
+            support.firePropertyChange("error", "", message);
+            throw new IllegalArgumentException(message);
+        }
     }
 
     public void removeDevice(String deviceId) {

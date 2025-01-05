@@ -11,7 +11,7 @@ public class NetworkDeviceFactory implements Factory {
         String name = values.get("name");
 
         if (name == null) {
-            return null;
+            return new ErrorDevice("error", name);
         }
     
         switch (name.toUpperCase()) {
@@ -30,7 +30,7 @@ public class NetworkDeviceFactory implements Factory {
             case "WAP":
                 return new WAP(deviceId, name);
             default:
-                throw new IllegalArgumentException("Cannot find device of type " + name);
+                return new ErrorDevice("error", name);
         }
     }
 }
