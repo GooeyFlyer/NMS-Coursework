@@ -17,6 +17,12 @@ public class ReadFiles {
         support = new PropertyChangeSupport(this);
         support.addPropertyChangeListener(listener);
     }
+
+    public void lineFormatErrorCall(String filePath, int lineCount, String line) {
+        String message = "Error: "+ filePath +" Line format is incorrect. Line "+lineCount+": " + line;
+        support.firePropertyChange("error", "", message);
+        throw new IllegalArgumentException(message);
+    }
     
     public List<Map<String, String>> readDevicesAndCount(String filePath) {
         int lineCount = 0;
@@ -31,6 +37,10 @@ public class ReadFiles {
 
                 // Split the line by comma and trim any whitespace
                 String[] parts = line.split(",");
+
+                if (!(parts.length == 2 || parts.length == 3)) {
+                    lineFormatErrorCall(filePath, lineCount, line);
+                }
                 String deviceId = parts[0].trim();
                 String name = parts[1].trim();
                 
@@ -53,6 +63,9 @@ public class ReadFiles {
                         String[] keyValue = pair.split("=");
                         if (keyValue.length == 2) {
                             values.put(keyValue[0].trim(), keyValue[1].trim()); // Get the value part and trim whitespace
+                        }
+                        else {
+                            lineFormatErrorCall(filePath, lineCount, line);
                         }
                     }
                 }
@@ -81,7 +94,7 @@ public class ReadFiles {
             String line;
             int lineCount = 0;
             while ((line = reader.readLine()) != null) {
-                lineCount += 1;
+                lineCount++;
                 // Split the line by comma and trim whitespace
                 String[] parts = line.split(",");
                 if (parts.length == 2) { // Ensure there are two parts
@@ -90,9 +103,7 @@ public class ReadFiles {
                     innerList.add(parts[1].trim()); // Second value
                     listOfLists.add(innerList); // Add the inner list to the outer list
                 } else {
-                    String message = "Error: "+ filePath +" Line format is incorrect. Line "+lineCount+": " + line;
-                    support.firePropertyChange("error", "", message);
-                    throw new IllegalArgumentException(message);
+                    lineFormatErrorCall(filePath, lineCount, line);
                 }
             }
         } catch (IOException e) {
