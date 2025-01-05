@@ -84,12 +84,14 @@ public class NetworkDeviceManager {
             return index;
         } else {
             if (devices.size() == 0) {
-                support.firePropertyChange("error", "", "devices list empty. Check devices.txt");
-                throw new IllegalArgumentException("devices list empty. Check devices.txt");
+                String message = "devices list empty. Check devices.txt";
+                support.firePropertyChange("error", "", message);
+                throw new IllegalArgumentException(message);
             }
             else {
-                support.firePropertyChange("error", "", "Device " + deviceId + " not found");
-                throw new IllegalArgumentException("Device " + deviceId + " not found");
+                String message = "Device " + deviceId + " not found";
+                support.firePropertyChange("error", "", message);
+                throw new IllegalArgumentException(message);
             }
 
         }
