@@ -8,9 +8,16 @@ import java.util.logging.Level;
 
 import logging.decorating.*;
 
+/**
+ * Thie FileLogCommand class implements the LogCommand interface.
+ * Writes logs to a file.
+ */
 public class FileLogCommand implements LogCommand{
     private static final String LOG_FILE = "logfile.txt";  // Specify the log file
 
+    /** 
+     * The constructor for the FileLogCommand class. This code deletes the contents of any existing log file.
+     */
     public FileLogCommand() {
         try {
             // Clears the file
@@ -18,10 +25,19 @@ public class FileLogCommand implements LogCommand{
             fileWriter.close();
 
         } catch (IOException e) {
-            System.err.println("An error occurred while writing to the log file: " + e.getMessage());
+            System.err.println("An error occurred while clearing the log file: " + e.getMessage());
         }
     }
 
+    /**
+     * The log method writes a decorated message to the log file. The message is sent through the LogMessage class.
+     * Then it is decorated by the FileMessage class, in order to mimic java's own logging outputs.
+     * 
+     * @param level The `level` parameter represents the logging level of the
+     * message being logged.
+     * @param message The `message` parameter is the message being logged.
+     * @param logger An unused paramater, from the implemented instance.
+     */
     @Override
     public void log(Level level, String message, Logger logger) { 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {

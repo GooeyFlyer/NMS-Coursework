@@ -6,6 +6,14 @@ import logging.decorating.MessageString;
 
 public class ConsoleLogCommand implements LogCommand{
 
+    /**
+     * The log method writes a decorated message to the log file. The message is sent through the LogMessage class.
+     * 
+     * @param level The `level` parameter represents the logging level of the
+     * message being logged.
+     * @param message The `message` parameter is the message being logged.
+     * @param logger An unused paramater, from the implemented instance.
+     */
     @Override
     public void log(Level level, String message, Logger logger) {
         
