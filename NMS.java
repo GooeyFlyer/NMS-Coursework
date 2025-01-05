@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import factory.*;
+import factory.FactoryControl;
 import factory.devices.NetworkDevice;
 import logging.Listener;
 
@@ -132,10 +132,10 @@ public class NMS{
         FactoryControl factoryControl = new FactoryControl();
         for (Map<String,String> values : listOfValues) {
             if (values.containsKey("Subnet")) {
-                factoryControl.setFactory(new NetworkDeviceFactoryConfigurated());
+                factoryControl.setFactory(true);
             }
             else {
-                factoryControl.setFactory(new NetworkDeviceFactory());
+                factoryControl.setFactory(false);
             }
             NetworkDevice device = factoryControl.getDevice(values);
             deviceManager.addDevice(device);

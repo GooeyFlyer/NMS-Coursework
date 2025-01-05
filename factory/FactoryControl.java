@@ -1,6 +1,5 @@
 package factory;
 import java.util.Map;
-
 import factory.devices.NetworkDevice;
 
 // Invoker class
@@ -8,8 +7,13 @@ public class FactoryControl {
     private Factory factory;
 
     // Sets the command for the button
-    public void setFactory(Factory factory) {
-        this.factory = factory;
+    public void setFactory(Boolean configuration) {
+        if (configuration) {
+            this.factory = new NetworkDeviceFactoryConfigurated();
+        }
+        else {
+            this.factory = new NetworkDeviceFactory();
+        }
     }
 
     // Invokes the command
