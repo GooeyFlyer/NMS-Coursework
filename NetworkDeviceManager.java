@@ -43,7 +43,7 @@ public class NetworkDeviceManager {
             String message =  "Cannot create device of type " + device.getName();
 
             if (device.getName().equals("")) {
-                message = message + "[blank space detected - check devices.txt]";
+                message = message + " [blank space detected - check devices.txt]";
             }
             
             support.firePropertyChange("error", "", message);
@@ -102,6 +102,11 @@ public class NetworkDeviceManager {
             }
             else {
                 String message = "Device " + deviceId + " not found";
+
+                if (deviceId.equals("")) {
+                    message = message + " [blank space detected]";
+                }
+
                 support.firePropertyChange("error", "", message);
                 throw new IllegalArgumentException(message);
             }
