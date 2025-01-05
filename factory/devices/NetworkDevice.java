@@ -52,5 +52,9 @@ public abstract class NetworkDevice {
         this.subnet = subnet;
     }
 
+    @Override
+    public String toString() {
+        return deviceId + "\t" + name + "\t" + connectionInterface + "\t" + MAC + "\t" + IPV4 + "\t" + subnet;
+    }
     
 }
