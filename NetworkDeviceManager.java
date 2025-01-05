@@ -54,15 +54,6 @@ public class NetworkDeviceManager {
         support.firePropertyChange("Removed Device", deviceId, null);
     }
 
-    /* public void configureDevice(String deviceId, DeviceConfiguration config) {
-        NetworkDevice device = getDeviceById(deviceId);
-        NetworkDevice oldDevice = device;
-        device.setConnectionInterface(config.getConnectionInterface());
-        device.setIPV4(config.getIPV4());
-        device.setMAC(config.getMAC());
-        device.setSubnet(config.getSubnet());
-    } */
-
     public List<NetworkDevice> getDevices() {
         return devices;
     }
