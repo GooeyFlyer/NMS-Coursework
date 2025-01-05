@@ -54,7 +54,7 @@ public abstract class NetworkDevice {
 
     @Override
     public String toString() {
-        return deviceId + "\t" + name + "\t" + connectionInterface + "\t" + MAC + "\t" + IPV4 + "\t" + subnet;
+        return "deviceId: " + deviceId + " name: " + name +  " connectionInterface: " + connectionInterface + " MAC: " + MAC + " IPV4: " + IPV4 + " subnet: " + subnet;
     }
     
 }
