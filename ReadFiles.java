@@ -79,7 +79,9 @@ public class ReadFiles {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
+            int lineCount = 0;
             while ((line = reader.readLine()) != null) {
+                lineCount += 1;
                 // Split the line by comma and trim whitespace
                 String[] parts = line.split(",");
                 if (parts.length == 2) { // Ensure there are two parts
@@ -88,7 +90,9 @@ public class ReadFiles {
                     innerList.add(parts[1].trim()); // Second value
                     listOfLists.add(innerList); // Add the inner list to the outer list
                 } else {
-                    System.out.println("Error: Line format is incorrect - " + line);
+                    String message = "Error: "+ filePath +" Line format is incorrect. Line "+lineCount+": " + line;
+                    support.firePropertyChange("error", "", message);
+                    throw new IllegalArgumentException(message);
                 }
             }
         } catch (IOException e) {
@@ -96,6 +100,7 @@ public class ReadFiles {
             e.printStackTrace();
         }
 
+        System.out.println(listOfLists.toString());
         return listOfLists; // Return the list of lists
     }
 
