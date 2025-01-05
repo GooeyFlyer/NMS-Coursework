@@ -1,7 +1,7 @@
 package logging;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
+import java.lang.ProcessHandle.Info;
 import java.util.logging.Level;
 
 import java.util.Scanner;
@@ -20,6 +20,7 @@ public class Listener implements PropertyChangeListener {
         //REMOVE COMMENT TO ALLOW USER CHOICE OF LOGGING: LogCommand logCommand = getLogCommandChoice();
         
         loggingManager.setLogCommand(logCommand);
+        loggingManager.logEvent(Level.INFO, "----------Beginning program----------\n");
     }
 
     // Method to get user input for logging type.
