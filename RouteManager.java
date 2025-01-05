@@ -19,6 +19,7 @@ import logging.Listener;
 public class RouteManager {
     private NetworkDeviceManager deviceManager;
     private int[][] adjMatrix;
+    private boolean adjMatrixChanged = false;
     private boolean[] visited;
     private PropertyChangeSupport support;
 
@@ -51,6 +52,7 @@ public class RouteManager {
             adjMatrix[sourceIndex][destinationIndex] = 1;
             adjMatrix[destinationIndex][sourceIndex] = 1;
         }
+        adjMatrixChanged = true;
         support.firePropertyChange("Added route between " + source.getDeviceId() + " and " + destination.getDeviceId(), oldValueSourceDestination, adjMatrix[sourceIndex][destinationIndex]);
     }
 
@@ -62,9 +64,21 @@ public class RouteManager {
 
         List<Integer> indexPath = bfs(sourceIndex, destinationIndex);
 
-        for (Integer index : indexPath) {
-            path.add(deviceManager.getDeviceByIndex(index));
+        if (indexPath.isEmpty()) {
+            if (!adjMatrixChanged) {
+                support.firePropertyChange("error", "", "adjMatrix empty. Check connections.txt");
+            }
+            else {
+                support.firePropertyChange("warn", "", "No path found between devices " + source.getDeviceId() + " and " + destination.getDeviceId());
+                System.out.println("No path found between devices " + source.getDeviceId() + " and " + destination.getDeviceId());
+            }
         }
+        else {
+            for (Integer index : indexPath) {
+                path.add(deviceManager.getDeviceByIndex(index));
+            }
+        }
+
         return path;
     }
 

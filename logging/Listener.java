@@ -59,6 +59,11 @@ public class Listener implements PropertyChangeListener {
             loggingManager.logEvent(Level.SEVERE, message);
         }
 
+        else if ("warn".equals(event.getPropertyName())) {
+            String message = "" + event.getNewValue();
+            loggingManager.logEvent(Level.WARNING, message);
+        }
+
         else {
             String message = event.getPropertyName() + ", Old Value: " + event.getOldValue() + ", New Value: " + event.getNewValue();
             loggingManager.logEvent(Level.INFO, message);

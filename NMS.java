@@ -79,10 +79,7 @@ public class NMS{
         // routeManager.printGraph();
 
         List<NetworkDevice> path = routeManager.getOptimalRoute(deviceManager.getDeviceById(sourceId), deviceManager.getDeviceById(destinationId));
-        if(path.isEmpty()) {
-            System.out.println("No path found between devices");
-        }
-        else {
+        if(!path.isEmpty()) {
             System.out.println(sourceId + " to " + destinationId + ": ");
             printRoute(path);
             System.out.println();
