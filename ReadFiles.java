@@ -42,7 +42,7 @@ public class ReadFiles {
     }
     public void lineFormatWarningCall(String filePath, int lineCount, String line) {
         String message = filePath +" Line format is incorrect. Line "+lineCount+": " + line + "\nProceeding...";
-        support.firePropertyChange("warning", "", message);
+        support.firePropertyChange("warn", "", message);
     }
     
     /**
@@ -94,7 +94,6 @@ public class ReadFiles {
                             values.put(keyValue[0].trim(), keyValue[1].trim()); // Get the value part and trim whitespace
                         }
                         else if(pair.contains("IPV4:")) {
-                            System.out.println(pair);
                             keyValue = pair.split(":");
                             values.put(keyValue[0].trim(), keyValue[1].trim()); // Get the value part and trim whitespace
                         }
@@ -151,7 +150,6 @@ public class ReadFiles {
             e.printStackTrace();
         }
 
-        System.out.println(listOfLists);
         return listOfLists; // Return the list of lists
     }
 
