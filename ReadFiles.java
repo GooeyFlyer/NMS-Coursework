@@ -40,6 +40,10 @@ public class ReadFiles {
         support.firePropertyChange("error", "", message);
         throw new IllegalArgumentException(message);
     }
+    public void lineFormatWarningCall(String filePath, int lineCount, String line) {
+        String message = filePath +" Line format is incorrect. Line "+lineCount+": " + line + "\nProceeding...";
+        support.firePropertyChange("warning", "", message);
+    }
     
     /**
      * The method `readDevicesAndCount` reads the devices.txt file, extracts the values, then returns a list of devices.
@@ -95,7 +99,7 @@ public class ReadFiles {
                             values.put(keyValue[0].trim(), keyValue[1].trim()); // Get the value part and trim whitespace
                         }
                         else {
-                            lineFormatErrorCall(filePath, lineCount, line);
+                            lineFormatWarningCall(filePath, lineCount, line);
                         }
                     }
                 }

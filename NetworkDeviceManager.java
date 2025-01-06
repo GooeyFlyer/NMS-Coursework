@@ -40,7 +40,7 @@ public class NetworkDeviceManager {
             support.firePropertyChange("Added Device", null, device.getDeviceId());
         }
         else {
-            String message =  "Cannot create device of type " + device.getName();
+            String message =  "Cannot create device of type " + device.getName() + ", check devices.txt";
 
             if (device.getName().equals("")) {
                 message = message + " [blank space detected - check devices.txt]";
