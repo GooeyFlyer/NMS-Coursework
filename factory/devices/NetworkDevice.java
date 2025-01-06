@@ -1,10 +1,11 @@
-public class NetworkDevice {
-    String deviceId;
-    String name;
-    String connectionInterface;
-    String MAC;
-    String IPV4;
-    String subnet;
+package factory.devices;
+public abstract class NetworkDevice {
+    private String deviceId;
+    private String name;
+    private String connectionInterface;
+    private String MAC;
+    private String IPV4;
+    private String subnet;
 
     public NetworkDevice(String deviceId, String name) {
         this.deviceId = deviceId;
@@ -51,5 +52,9 @@ public class NetworkDevice {
         this.subnet = subnet;
     }
 
+    @Override
+    public String toString() {
+        return "deviceId: " + deviceId + " name: " + name +  " connectionInterface: " + connectionInterface + " MAC: " + MAC + " IPV4: " + IPV4 + " subnet: " + subnet;
+    }
     
 }

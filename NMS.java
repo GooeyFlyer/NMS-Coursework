@@ -1,10 +1,11 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.beans.PropertyChangeEvent;
+import java.beans.beancontext.BeanContextSupport;
 import java.util.List;
 import java.util.Map;
+
+import factory.FactoryControl;
+import factory.devices.NetworkDevice;
+import logging.Listener;
 
 /**
  * This is the primary class of the system.
@@ -16,86 +17,14 @@ import java.util.Map;
  * NOTE: DO NOT MOVE THIS CLASS TO ANY PACKAGE.
  *
  */
-
 public class NMS{
-    static int deviceCount;
-    static int weight = 1;
-            
-    public static List<Map<String, String>> readDevicesAndCount(String filePath) {
-        int lineCount = 0;
-        List<Map<String, String>> listOfValues = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                lineCount++;
-                Map<String, String> values = new HashMap<>();
-
-                // Split the line by comma and trim any whitespace
-                String[] parts = line.split(",");
-                String deviceId = parts[0].trim();
-                String name = parts[1].trim();
-                
-                // Print or process the values
-                // System.out.println("\ndeviceId=" + deviceId);
-                // System.out.println("name=" + name);
-                values.put("deviceId", deviceId);
-                values.put("name", name);
-
-                if (parts.length == 3) {
-                    String config = parts[2].trim();
-                    String trimmedConfig = config.replace("Config:{", "").replace("}", "");
-
-                    // Split by semicolons to get each key-value pair
-                    String[] pairs = trimmedConfig.split(";");
-
-                    // Extract just the values
-                    for (String pair : pairs) {
-                        // System.out.println(pair);
-                        String[] keyValue = pair.split("=");
-                        if (keyValue.length == 2) {
-                            values.put(keyValue[0].trim(), keyValue[1].trim()); // Get the value part and trim whitespace
-                        }
-                    }
-                }
-
-                listOfValues.add(values);
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred while reading the file.");
-            e.printStackTrace();
-        }
-
-        deviceCount = lineCount;
-        return listOfValues;
-    }
-
-    public static List<List<String>> readConnections(String filePath) {
-        List<List<String>> listOfLists = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Split the line by comma and trim whitespace
-                String[] parts = line.split(",");
-                if (parts.length == 2) { // Ensure there are two parts
-                    List<String> innerList = new ArrayList<>();
-                    innerList.add(parts[0].trim()); // First value
-                    innerList.add(parts[1].trim()); // Second value
-                    listOfLists.add(innerList); // Add the inner list to the outer list
-                } else {
-                    System.out.println("Error: Line format is incorrect - " + line);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred while reading the file.");
-            e.printStackTrace();
-        }
-
-        return listOfLists; // Return the list of lists
-    }
-
+    /**
+     * The function `printRoute` prints the device IDs in a list of network devices, with "to" between
+     * each device except for the last one.
+     * 
+     * @param route A list of NetworkDevice objects representing the route to be printed.
+     */
     public static void printRoute(List<NetworkDevice> route) {
         for (NetworkDevice device : route) {
             System.out.print(device.getDeviceId());
@@ -104,50 +33,92 @@ public class NMS{
             }
         }
     }
+
+    // Calculations for weight to be changed later, for now, just returns 1
+    /**
+     * The function `calculateWeight` takes two deviceIds and calculates the weight of their connection.
+     * For now it returns only the value 1, but can be changed as future developments.
+     * 
+     * @param deviceId1 The id of the first device
+     * @param deviceId2 The id of the second device
+     * @return The weight of the connection between devices.
+     */
+    public static int calculateWeight(String deviceId1, String deviceId2) {
+        return 1;
+    }
     
     public static void main(String[] args){
-
-        //make sure you use args instead of inputs
-
-        String devicesFilePath = args[0];
-        String connectionsFilePath = args[1];
-
-        String sourceId = args[2];
-        String destinationId = args[3];
-
-        List<Map<String, String>> listOfValues = readDevicesAndCount(devicesFilePath);
-        List<List<String>> listOfConnections = readConnections(connectionsFilePath);
-
-        // System.out.println("\n" + listOfConnections.toString());
         
-        NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount);
-        RouteManager routeManager = new RouteManager(deviceManager, deviceCount);
+        Listener listener = new Listener();
 
+        String devicesFilePath;
+        String connectionsFilePath;
+
+        String sourceId;
+        String destinationId;
+        try {
+            devicesFilePath = args[0];
+            connectionsFilePath = args[1];
+
+            sourceId = args[2];
+            destinationId = args[3];
+        } catch (Exception e) {
+            String message = "Inputs entered incorrectly";
+            listener.propertyChange(new PropertyChangeEvent(new BeanContextSupport(), "error", "", message));
+            throw new IllegalArgumentException(message);
+        }
+        
+        ReadFiles readFiles = new ReadFiles(listener);
+
+        List<Map<String, String>> listOfValues = readFiles.readDevicesAndCount(devicesFilePath);
+        List<List<String>> listOfConnections = readFiles.readConnections(connectionsFilePath);
+        int deviceCount = readFiles.getDeviceCount();
+
+        NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount, listener);
+        RouteManager routeManager = new RouteManager(deviceManager, deviceCount, listener);
+
+        
+
+        // making devices
+        FactoryControl factoryControl = new FactoryControl();
         for (Map<String,String> values : listOfValues) {
-            NetworkDevice device = new NetworkDevice(values.get("deviceId"), values.get("name"));
-            deviceManager.addDevice(device);
+            if (values.containsKey("Subnet")) {
+                factoryControl.setFactory(true);
+            }
+            else {
+                factoryControl.setFactory(false);
+            }
+            deviceManager.addDevice(factoryControl.getDevice(values));
         }
 
+        // making connections
         for (List<String> connection : listOfConnections) {
             NetworkDevice device1 = deviceManager.getDeviceById(connection.get(0));
             NetworkDevice device2 = deviceManager.getDeviceById(connection.get(1));
 
-            routeManager.addRoute(device1, device2, weight);
+            routeManager.addRoute(device1, device2, calculateWeight(device1.getName(), device2.getName()));
         }
 
         // routeManager.printGraph();
 
         List<NetworkDevice> path = routeManager.getOptimalRoute(deviceManager.getDeviceById(sourceId), deviceManager.getDeviceById(destinationId));
-        if(path.isEmpty()) {
-            System.out.println("No path found between devices");
-        }
-        else {
+        if(!path.isEmpty()) {
             System.out.println(sourceId + " to " + destinationId + ": ");
             printRoute(path);
             System.out.println();
         }
 
-        System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
+        // Error testing
+        //System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
+
+        System.out.println("\n PC1 test:");
+        System.out.println(deviceManager.getDeviceById("PC1").toString());
+
+        System.out.println("\n PC6 test:");
+        System.out.println(deviceManager.getDeviceById("PC6").toString());
+
+        // ConsoleLogging consoleLogging = new ConsoleLogging(new BaseLogging());
+        // consoleLogging.log(level, "console 2");
     }
 
 }

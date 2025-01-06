@@ -3,6 +3,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import factory.devices.NetworkDevice;
+import logging.Listener;
+
+import java.beans.PropertyChangeSupport;
+
 /**
  * This class acts as a manager class through which
  * the devices represented by NetworkDevice shall be
@@ -15,26 +20,39 @@ import java.util.Map;
  * other class.
  */
 public class NetworkDeviceManager {
-    
     private List<NetworkDevice> devices;
     private Map<String, Integer> deviceIndexMap;
+    private PropertyChangeSupport support;
 
-    public NetworkDeviceManager(int vertexCount) {
+    public NetworkDeviceManager(int vertexCount, Listener listener) {
         devices = new ArrayList<>(vertexCount);
         deviceIndexMap = new HashMap<>(vertexCount);
+
+        support = new PropertyChangeSupport(this);
+        support.addPropertyChangeListener(listener);
     }
 
     public void addDevice(NetworkDevice device) {
-        devices.add(device);
-        deviceIndexMap.put(device.getDeviceId(), devices.size() -1);
+        if (!device.getDeviceId().equals("error")) {
+            devices.add(device);
+            deviceIndexMap.put(device.getDeviceId(), devices.size() -1);
+
+            support.firePropertyChange("Added Device", null, device.getDeviceId());
+        }
+        else {
+            String message =  "Cannot create device of type " + device.getName() + ", check devices.txt";
+
+            if (device.getName().equals("")) {
+                message = message + " [blank space detected - check devices.txt]";
+            }
+            
+            support.firePropertyChange("error", "", message);
+            throw new IllegalArgumentException(message);
+        }
     }
 
     public void removeDevice(String deviceId) {
-        Integer index = deviceIndexMap.get(deviceId);
-        if (index == null) {
-            System.out.println("Error: Vertex not found.");
-            return;
-        }
+        Integer index = getDeviceIndexById(deviceId);
 
         // Remove the device from the list and map
         devices.remove((int) index);
@@ -45,14 +63,7 @@ public class NetworkDeviceManager {
         for (int i = 0; i < devices.size(); i++) {
             deviceIndexMap.put(devices.get(i).getDeviceId(), i);
         }
-    }
-
-    public void configureDevice(String deviceId, DeviceConfiguration config) {
-        NetworkDevice device = getDeviceById(deviceId);
-        device.setConnectionInterface(config.getConnectionInterface());
-        device.setIPV4(config.getIPV4());
-        device.setMAC(config.getMAC());
-        device.setSubnet(config.getSubnet());
+        support.firePropertyChange("Removed Device", deviceId, null);
     }
 
     public List<NetworkDevice> getDevices() {
@@ -63,20 +74,20 @@ public class NetworkDeviceManager {
         return deviceIndexMap;
     }
 
+    public String getDevicesAsString() {
+        String output = "";
+        for (NetworkDevice device : devices) {
+            output = output + device.getDeviceId() + " ";
+        }
+        return output;
+    }
+
     public NetworkDevice getDeviceByIndex(int index) {
         return devices.get(index);
     }
 
     public NetworkDevice getDeviceById(String deviceId) {
- 
-        int index = getDeviceIndexById(deviceId);
-        if (index == -1) {
-            System.out.println("Device " + deviceId + " not found");
-            return new NetworkDevice("Error", "Error");
-        }
-        else{
-            return devices.get(index);
-        }
+        return devices.get(getDeviceIndexById(deviceId));
     }
 
     public int getDeviceIndexById(String deviceId) {
@@ -84,7 +95,26 @@ public class NetworkDeviceManager {
         if (index != null) {
             return index;
         } else {
-            return -1;
+            if (devices.size() == 0) {
+                String message = "devices list empty. Check devices.txt or inputs";
+                support.firePropertyChange("error", "", message);
+                throw new IllegalArgumentException(message);
+            }
+            else {
+                String message = "Device " + deviceId + " not found";
+
+                if (deviceId.equals("")) {
+                    message = message + " [blank space detected]";
+                }
+
+                support.firePropertyChange("error", "", message);
+                throw new IllegalArgumentException(message);
+            }
+
         }
+    }
+
+    public int getDeviceIndexByObject(NetworkDevice networkDevice){
+        return getDeviceIndexById(networkDevice.getDeviceId());
     }
 }
