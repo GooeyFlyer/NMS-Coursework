@@ -34,7 +34,28 @@ public class NMS{
         }
     }
 
-    // Calculations for weight to be changed later, for now, just returns 1
+    /**
+     * The function testing is used to print values to the command line, to test certain featues work.
+     * Testing was used using the connection.txt and devices.txt file provided in the coursework start code
+     * 
+     * @param deviceManager The NetworkDeviceManager used by the NMS
+     * @param routeManager The RouteManager used by the NMS
+     */
+    public static void testing(NetworkDeviceManager deviceManager, RouteManager routeManager) {
+        // Error testing
+        System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
+
+        System.out.println("\n PC1 test:");
+        System.out.println(deviceManager.getDeviceById("PC1").toString());
+
+        System.out.println("\n PC6 test:");
+        System.out.println(deviceManager.getDeviceById("PC6").toString());
+
+        routeManager.printGraph();
+
+        routeManager.printGraph();
+    }
+
     /**
      * The function `calculateWeight` takes two deviceIds and calculates the weight of their connection.
      * For now it returns only the value 1, but can be changed as future developments.
@@ -99,14 +120,15 @@ public class NMS{
             routeManager.addRoute(device1, device2, calculateWeight(device1.getName(), device2.getName()));
         }
 
-        // routeManager.printGraph();
-
         List<NetworkDevice> path = routeManager.getOptimalRoute(deviceManager.getDeviceById(sourceId), deviceManager.getDeviceById(destinationId));
         if(!path.isEmpty()) {
             System.out.println(sourceId + " to " + destinationId + ": ");
             printRoute(path);
             System.out.println();
         }
+
+        // Error testing
+        // testing();
     }
 
 }
