@@ -107,18 +107,6 @@ public class NMS{
             printRoute(path);
             System.out.println();
         }
-
-        // Error testing
-        //System.out.println(deviceManager.getDeviceById("PC").getDeviceId());
-
-        System.out.println("\n PC1 test:");
-        System.out.println(deviceManager.getDeviceById("PC1").toString());
-
-        System.out.println("\n PC6 test:");
-        System.out.println(deviceManager.getDeviceById("PC6").toString());
-
-        // ConsoleLogging consoleLogging = new ConsoleLogging(new BaseLogging());
-        // consoleLogging.log(level, "console 2");
     }
 
 }
