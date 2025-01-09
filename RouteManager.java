@@ -42,7 +42,8 @@ public class RouteManager {
      * The addDevice function is unused in my implementation
      */
     public void addDevice(NetworkDevice device) {
-        // add new column and row to matrix
+        // unused implementation
+        return;
     }
 
     /**
@@ -75,6 +76,31 @@ public class RouteManager {
         // logs the change
         adjMatrixChanged = true;
         support.firePropertyChange("Added route between " + source.getDeviceId() + " and " + destination.getDeviceId(), oldValueSourceDestination, adjMatrix[sourceIndex][destinationIndex]);
+    }
+
+    /**
+     * The removeNode method removes a node from the adjacency matrix.
+     * 
+     * @param nodeIndex The index in the matrix to remove.
+     */
+    public void removeNode(int nodeIndex) {
+        int n = adjMatrix.length;
+        int[][] newMatrix = new int[n - 1][n - 1];
+        
+        int newRow = 0, newCol = 0;
+        for (int i = 0; i < n; i++) {
+            if (i == nodeIndex) continue;  // Skip the row for the removed node
+            newCol = 0;
+            for (int j = 0; j < n; j++) {
+                if (j == nodeIndex) continue;  // Skip the column for the removed node
+                newMatrix[newRow][newCol] = adjMatrix[i][j];
+                newCol++;
+            }
+            newRow++;
+        }
+        
+        support.firePropertyChange("Removed Device from graph", "index: " + nodeIndex, null);
+        adjMatrix = newMatrix;
     }
 
     /**

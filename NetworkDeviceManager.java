@@ -82,7 +82,7 @@ public class NetworkDeviceManager {
         for (int i = 0; i < devices.size(); i++) {
             deviceIndexMap.put(devices.get(i).getDeviceId(), i);
         }
-        support.firePropertyChange("Removed Device", deviceId, null);
+        support.firePropertyChange("Removed Device from manager", deviceId, null);
     }
 
     public List<NetworkDevice> getDevices() {
