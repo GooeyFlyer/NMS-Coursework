@@ -3,8 +3,18 @@ import java.util.Map;
 
 import factory.devices.*;
 
+/** The NetworkDeviceFactory class. Implements the Factory interface.
+ * This class decides what device type to use, then creates a new NetworkDevice object for it.
+*/
 public class NetworkDeviceFactory implements Factory {
 
+    /**
+     * The getDevice method creates a new device object, using values from the NMS.
+     * 
+     * @param values A dictionary of values relating to a device,
+     * including deviceId, name, and configurations if applicable.
+     * @return a NetworkDevice object of a certain type, depending on the values paramater.
+     */
     @Override
     public NetworkDevice getDevice(Map<String, String> values) {
         String deviceId = values.get("deviceId");

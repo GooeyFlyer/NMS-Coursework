@@ -13,7 +13,8 @@ import logging.decorating.*;
  * Writes logs to a file.
  */
 public class FileLogCommand implements LogCommand{
-    private static final String LOG_FILE = "logfile.txt";  // Specify the log file
+    // LOG_FILE - a future development is to allow the user to set this.
+    private static final String LOG_FILE = "logfile.txt";  
 
     /** 
      * The constructor for the FileLogCommand class. This code deletes the contents of any existing log file.
@@ -48,7 +49,7 @@ public class FileLogCommand implements LogCommand{
             String output = messageString.getMessage();
 
             writer.write(output);
-            writer.newLine();  // Move to the next line after writing the message
+            writer.newLine();  // Move to the next line
         } catch (IOException e) {
             System.err.println("An error occurred while writing to the log file: " + e.getMessage());
         }

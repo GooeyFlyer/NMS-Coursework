@@ -8,7 +8,7 @@ import factory.devices.NetworkDevice;
 import logging.Listener;
 
 /**
- * This class primarily does the calculation of
+ * This class does the calculation of
  * routes between devices. It uses an adjacency matrix to store the graph of network devices.
  * Uses a breadth-first search to find the optimal route between nodes in the graph.
  */
@@ -39,10 +39,7 @@ public class RouteManager {
     }
 
     /**
-     * The addDevice function adds a new network device to the adjacency matrix.
-     * 
-     * @param device The `device` parameter is an object of type `NetworkDevice` that represents a
-     * device to be added to a network.
+     * The addDevice function is unused in my implementation
      */
     public void addDevice(NetworkDevice device) {
         // add new column and row to matrix
@@ -62,6 +59,7 @@ public class RouteManager {
         int sourceIndex = deviceManager.getDeviceIndexByObject(source);
         int destinationIndex = deviceManager.getDeviceIndexByObject(destination);
 
+        // Checks if the device index is outside the matrix
         if (sourceIndex >= adjMatrix.length || destinationIndex >= adjMatrix.length) {
             System.out.println("Error: Vertex index out of bounds.");
             support.firePropertyChange("error", "", "Vertex index out of bounds.");
@@ -70,9 +68,11 @@ public class RouteManager {
 
         int oldValueSourceDestination = adjMatrix[sourceIndex][destinationIndex];
 
+        // adds the connection
         adjMatrix[sourceIndex][destinationIndex] = weight;
         adjMatrix[destinationIndex][sourceIndex] = weight;
 
+        // logs the change
         adjMatrixChanged = true;
         support.firePropertyChange("Added route between " + source.getDeviceId() + " and " + destination.getDeviceId(), oldValueSourceDestination, adjMatrix[sourceIndex][destinationIndex]);
     }
@@ -92,8 +92,10 @@ public class RouteManager {
 
         List<NetworkDevice> path = new ArrayList<>();
 
+        // Calls bfs
         List<Integer> indexPath = bfs(sourceIndex, destinationIndex);
 
+        // Error checking if a path wasn't found
         if (indexPath.isEmpty()) {
             if (!adjMatrixChanged) {
                 support.firePropertyChange("error", "", "adjMatrix empty. Check connections.txt or inputs");
@@ -104,6 +106,7 @@ public class RouteManager {
             }
         }
         else {
+            // converts the integer list to a list of device objects
             for (Integer index : indexPath) {
                 path.add(deviceManager.getDeviceByIndex(index));
             }
@@ -133,7 +136,6 @@ public class RouteManager {
 
         while (!queue.isEmpty()) {
             int current = queue.poll();
-            // System.out.println(deviceManager.getDeviceByIndex(current).getDeviceId());
             stack.add(current);
 
             if (current == destinationIndex) {

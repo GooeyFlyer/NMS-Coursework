@@ -40,6 +40,14 @@ public class ReadFiles {
         support.firePropertyChange("error", "", message);
         throw new IllegalArgumentException(message);
     }
+
+     /**
+     * The method `lineFormatWarningCall` logs (but does not throw) an error if the line format for files is incorrect.
+     * 
+     * @param filePath The path of the file. Of type String.
+     * @param lineCount The line number in the file that has the issue. Of type int
+     * @param line The actual line in the file that has the issue. Of type String
+     */
     public void lineFormatWarningCall(String filePath, int lineCount, String line) {
         String message = filePath +" Line format is incorrect. Line "+lineCount+": " + line + "\nProceeding...";
         support.firePropertyChange("warn", "", message);

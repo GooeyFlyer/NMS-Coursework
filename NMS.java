@@ -8,14 +8,8 @@ import factory.devices.NetworkDevice;
 import logging.Listener;
 
 /**
- * This is the primary class of the system.
- * It will be used to launch the system and perform
- * the necessary actions, like adding devices,
- * removing devices, getting optimal route between
- * devices, filtering and searching for devices,
- * creating alerts etc. 
- * NOTE: DO NOT MOVE THIS CLASS TO ANY PACKAGE.
- *
+ * This is the primary class of the application. Used to create various managers,
+ * to control the system. Includes device managment, routing operations, and logging.
  */
 public class NMS{
 
@@ -68,15 +62,25 @@ public class NMS{
         return 1;
     }
     
+    /**
+     * The main method. This is the method run when the application starts.
+     * 
+     * @param args A list of Strings taken from the command line when the application is run.
+     * Should be in the form: devices file path, connections file path, source device, destination device.
+     */
     public static void main(String[] args){
         
+        // Create logging listener
         Listener listener = new Listener();
 
+        // Instantalise values
         String devicesFilePath;
         String connectionsFilePath;
 
         String sourceId;
         String destinationId;
+
+        // Read args values
         try {
             devicesFilePath = args[0];
             connectionsFilePath = args[1];
@@ -89,18 +93,17 @@ public class NMS{
             throw new IllegalArgumentException(message);
         }
         
+        // Reads all the data from files.
         ReadFiles readFiles = new ReadFiles(listener);
-
         List<Map<String, String>> listOfValues = readFiles.readDevicesAndCount(devicesFilePath);
         List<List<String>> listOfConnections = readFiles.readConnections(connectionsFilePath);
         int deviceCount = readFiles.getDeviceCount();
 
+        // Creates managers
         NetworkDeviceManager deviceManager = new NetworkDeviceManager(deviceCount, listener);
         RouteManager routeManager = new RouteManager(deviceManager, deviceCount, listener);
 
-        
-
-        // making devices
+        // creating devices
         FactoryControl factoryControl = new FactoryControl();
         for (Map<String,String> values : listOfValues) {
             if (values.containsKey("Subnet")) {
@@ -112,7 +115,7 @@ public class NMS{
             deviceManager.addDevice(factoryControl.getDevice(values));
         }
 
-        // making connections
+        // adding connections
         for (List<String> connection : listOfConnections) {
             NetworkDevice device1 = deviceManager.getDeviceById(connection.get(0));
             NetworkDevice device2 = deviceManager.getDeviceById(connection.get(1));
@@ -120,6 +123,7 @@ public class NMS{
             routeManager.addRoute(device1, device2, calculateWeight(device1.getName(), device2.getName()));
         }
 
+        // Find optimal route between the source and destination device, then prints to the console.
         List<NetworkDevice> path = routeManager.getOptimalRoute(deviceManager.getDeviceById(sourceId), deviceManager.getDeviceById(destinationId));
         if(!path.isEmpty()) {
             System.out.println(sourceId + " to " + destinationId + ": ");
