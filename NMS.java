@@ -63,6 +63,21 @@ public class NMS{
     }
     
     /**
+     * The removeDevice method removes the device from both managers.
+     * Unused in the current implementation, but easy to add.
+     * 
+     * @param deviceManager The NetworkDeviceManager that stores devices
+     * @param routeManager The RouteManager that stores the graph
+     * @param deviceId The deviceId String to be removed
+     */
+    public static void removeDevice(NetworkDeviceManager deviceManager, RouteManager routeManager, String deviceId) {
+        int index = deviceManager.getDeviceIndexById(deviceId);
+        deviceManager.removeDevice(deviceId);
+        routeManager.removeNode(index);
+        System.out.println("Removed device: " + deviceId);
+    }
+    
+    /**
      * The main method. This is the method run when the application starts.
      * 
      * @param args A list of Strings taken from the command line when the application is run.
